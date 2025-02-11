@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: hair_mvp
+
+  config:
+    import: "optional:file:.env[.properties]"  # .env ?? ?? ??
+
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    initialization-mode: never
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.MySQLDialect
+      defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+
+jwt:
+  secret-key: ${SECRET_KEY}
+  access-key-expiration-s: ${ACCESS_KEY_EXPIRATION_SECONDS}
+  refresh-key-expiration-s: ${REFRESH_KEY_EXPIRATION_SECONDS}
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
