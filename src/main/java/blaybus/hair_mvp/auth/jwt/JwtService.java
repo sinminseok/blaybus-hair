@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
+import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
 import blaybus.hair_mvp.domain.user.entity.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

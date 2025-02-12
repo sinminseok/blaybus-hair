@@ -5,6 +5,7 @@ import java.util.List;
 
 import blaybus.hair_mvp.auth.FilterExceptionResolver;
 import blaybus.hair_mvp.auth.RequestMatcherHolder;
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
 import blaybus.hair_mvp.auth.dto.JwtMetadata;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

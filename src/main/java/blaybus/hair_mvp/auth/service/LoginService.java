@@ -1,9 +1,9 @@
 package blaybus.hair_mvp.auth.service;
 
 import blaybus.hair_mvp.auth.dto.LoginResponse;
-import blaybus.hair_mvp.auth.jwt.AccessTokenPayload;
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
 import blaybus.hair_mvp.auth.jwt.JwtService;
-import blaybus.hair_mvp.auth.jwt.RefreshTokenPayload;
+import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
 import blaybus.hair_mvp.domain.user.entity.RefreshToken;
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.repository.RefreshTokenRepository;
