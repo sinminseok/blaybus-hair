@@ -1,15 +1,12 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,8 +32,8 @@ public class Designer {
     @Column(name = "shop_address", nullable = false)
     private String shopAddress;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
-    private List<DesignerRegion> regions;
+    @Column(name = "region", nullable = false)
+    private String region;
 
     @Column(name = "category", nullable = false)
     private String category;
@@ -54,17 +51,14 @@ public class Designer {
     private String bio;
 
     @Builder
-    public Designer(String name, String shopAddress, String category, int f2fConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
+    public Designer(String name, String shopAddress, String region, String category, int f2fConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
         this.name = name;
         this.shopAddress = shopAddress;
+        this.region = region;
         this.category = category;
         this.f2fConsultFee = f2fConsultFee;
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;
-    }
-
-    public void addRegion(DesignerRegion region) {
-        this.regions.add(region);
     }
 }

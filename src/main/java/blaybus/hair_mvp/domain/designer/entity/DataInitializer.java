@@ -1,12 +1,9 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
-import blaybus.hair_mvp.domain.designer.repository.DesignerRegionRepository;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -21,7 +18,6 @@ import org.springframework.core.io.ClassPathResource;
 public class DataInitializer {
 
     private final DesignerRepository designerRepository;
-    private final DesignerRegionRepository designerRegionRepository;
 
     @Bean
     public ApplicationRunner initData() {
@@ -38,7 +34,7 @@ public class DataInitializer {
 
                         String name = values[0].trim();
                         String shopAddress = values[1].trim();
-                        String[] regions = values[2].split("/");
+                        String region = values[2];
                         String category = values[3].trim();
                         int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
                         int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
@@ -48,20 +44,17 @@ public class DataInitializer {
                                         : MeetingType.VIDEO_MEETING;
                         String bio = values[7].trim();
 
-                        Designer designer = designerRepository.save(
+                        designerRepository.save(
                                 Designer.builder()
                                         .name(name)
                                         .shopAddress(shopAddress)
+                                        .region(region)
                                         .category(category)
                                         .f2fConsultFee(f2fConsultFee)
                                         .onlineConsultFee(onlineConsultFee)
                                         .meetingType(meetingType)
                                         .bio(bio)
                                         .build());
-
-                        Arrays.stream(regions).map(String::trim).forEach(region -> {
-                            designerRegionRepository.save(new DesignerRegion(region, designer));
-                        });
                     }
                 } catch (Exception e) {
                     log.error("csv 파일 읽는 중 오류 발생", e);
