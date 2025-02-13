@@ -20,7 +20,7 @@ public class KakaoPayController {
 
     @PostMapping("/ready")
     public ResponseEntity<?> requestPayment(@RequestBody PaymentRequest request){
-        log.info(request.toString());
+        System.out.println("결제 요청 도착 :" + request );
         KakaoReadyResponse kakaoReadyResponse = kakaoPayService.kakaoPayReady(request);
         SuccessResponse response = new SuccessResponse(true,"결제 요청 성공", kakaoReadyResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -54,7 +54,7 @@ public class KakaoPayService {
         params.put("quantity","1");
         params.put("total_amount", String.valueOf(request.getAmount()));
         params.put("tax_free_amount","0");
-        params.put("approval_url","http://localhost:8080/online/v1/payment/success");
+        params.put("approval_url","http://localhost:8080/online/v1/payment/approve");
         params.put("cancel_url","http://localhost:8080/online/v1/payment/cancel");
         params.put("fail_url","http://localhost:8080/online/v1/payment/fail");
 
@@ -97,7 +97,7 @@ public class KakaoPayService {
         // JSON 데이터로 변경해야 하므로 Map 사용
 
         KakaoApproveResponse response = restTemplate.postForObject(
-                KAKAO_PAY_API_HOST + "online/v1/payment/approve" ,request,KakaoApproveResponse.class
+                KAKAO_PAY_API_HOST + "/online/v1/payment/approve" ,request,KakaoApproveResponse.class
         );
 
         payment.setStatus(Status.SUCCESS);

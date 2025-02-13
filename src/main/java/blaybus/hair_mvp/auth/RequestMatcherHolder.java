@@ -27,7 +27,11 @@ public class RequestMatcherHolder {
             new RequestInfo(GET, "/clients/*", Role.CLIENT),
             // owner (가게 사장)
             new RequestInfo(POST, "/designers/*", Role.DESIGNER),
-            new RequestInfo(GET, "/designers/*", Role.DESIGNER)
+            new RequestInfo(GET, "/designers/*", Role.DESIGNER),
+            // 카카오페이
+            new RequestInfo(POST,"/online/v1/payment/*",null),
+            new RequestInfo(GET,"/online/v1/payment/*",null)
+
     );
 
     private final ConcurrentHashMap<String, RequestMatcher> reqMatcherCacheMap = new ConcurrentHashMap<>();
