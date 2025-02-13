@@ -53,6 +53,9 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 
+	// csv 파싱
+	implementation 'com.opencsv:opencsv:5.5.2'
+
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

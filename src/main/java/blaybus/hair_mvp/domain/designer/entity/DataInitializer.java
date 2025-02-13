@@ -1,9 +1,13 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
+import com.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -23,26 +27,32 @@ public class DataInitializer {
     public ApplicationRunner initData() {
         return args -> {
             if (designerRepository.count() == 0) { // 데이터가 없을 때만 mock 데이터 삽입
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                try (CSVReader csvReader = new CSVReader(new InputStreamReader(
                         new ClassPathResource("디자이너 목록 리스트 업.csv").getInputStream(), StandardCharsets.UTF_8))) {
 
-                    String line;
-                    br.readLine();
+                    List<String[]> designerList = csvReader.readAll();
+                    designerList.remove(0);
 
-                    while ((line = br.readLine()) != null) {
-                        String[] values = line.split(",");
-
+                    for (String[] values : designerList) {
                         String name = values[0].trim();
                         String shopAddress = values[1].trim();
-                        String region = values[2];
+                        String region = values[2].trim();
                         String category = values[3].trim();
                         int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
                         int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
-                        MeetingType meetingType = values[6].contains("대면") && values[6].contains("비대면")
-                                ? MeetingType.BOTH
-                                : values[6].contains("대면") ? MeetingType.MEETING
-                                        : MeetingType.VIDEO_MEETING;
-                        String bio = values[7].trim();
+                        String[] splitMeetingType = values[6].split(",");
+                        MeetingType meetingType = null;
+                        if (splitMeetingType.length == 1) {
+                            meetingType = values[6].equals("대면") ? MeetingType.MEETING : MeetingType.VIDEO_MEETING;
+                        } else if (splitMeetingType.length == 2) {
+                            meetingType = MeetingType.BOTH;
+
+                        }
+//                        MeetingType meetingType = values[6].contains("대면") && values[6].contains("비대면")
+//                                ? MeetingType.BOTH
+//                                : values[6].equals("대면") ? MeetingType.MEETING
+//                                        : MeetingType.VIDEO_MEETING;
+                        String bio = values[7];
 
                         designerRepository.save(
                                 Designer.builder()
