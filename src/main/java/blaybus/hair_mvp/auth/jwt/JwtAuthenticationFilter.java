@@ -2,6 +2,7 @@ package blaybus.hair_mvp.auth.jwt;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import blaybus.hair_mvp.auth.FilterExceptionResolver;
 import blaybus.hair_mvp.auth.RequestMatcherHolder;
@@ -40,11 +41,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
+            //validateRefreshToken(request, response, filterChain);
             validateAccessToken(request, response, filterChain);
-
         } catch (JwtException ex) {
             jwtFilterExceptionResolver.setResponse(response, ex);
         }
+
+    }
+
+    private void validateRefreshToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+        final Optional<String> refreshToken = getRefreshTokenFromCookie(request);
+        if(refreshToken.isEmpty()) return;
+        Claims claims = jwtService.verifyToken(refreshToken.get());
 
     }
 
@@ -60,6 +68,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    private Optional<String> getRefreshTokenFromCookie(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(JwtMetadata.REFRESH_TOKEN)) {
+                return Optional.ofNullable(cookie.getValue());
+            }
+        }
+        return Optional.empty();
+    }
+
     private String getAccessTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
@@ -68,7 +86,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(JwtMetadata.ACCESS_TOKEN)) {
                 if (cookie.getValue() == null || cookie.getValue().isEmpty()) {
-                    throw new JwtException("Empty Token in Cookie");
+                    throw new JwtException("Empty Access Token in Cookie");
                 }
                 return cookie.getValue();
             }
