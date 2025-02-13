@@ -1,13 +1,11 @@
 package blaybus.hair_mvp.domain.kakao_Payment.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 public class PaymentRequest {
     private String orderId;

@@ -1,6 +1,7 @@
 package blaybus.hair_mvp.domain.kakao_Payment.dto;
 
 
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,5 @@ public class KakaoApproveResponse {
     private Date created_at;
     private Date approved_at;
     private String payload;
-
+    private Status status;
 }
