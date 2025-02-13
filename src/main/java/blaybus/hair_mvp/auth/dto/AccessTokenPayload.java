@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.auth.jwt;
+package blaybus.hair_mvp.auth.dto;
 
 
 import blaybus.hair_mvp.domain.user.entity.Role;

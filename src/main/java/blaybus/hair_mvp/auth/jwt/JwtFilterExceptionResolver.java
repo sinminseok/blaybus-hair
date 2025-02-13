@@ -1,7 +1,8 @@
-package blaybus.hair_mvp.auth;
+package blaybus.hair_mvp.auth.jwt;
 
 import java.io.IOException;
 
+import blaybus.hair_mvp.auth.FilterExceptionResolver;
 import blaybus.hair_mvp.exception.ErrorResponseCode;
 import blaybus.hair_mvp.exception.code.AuthExceptionCode;
 import org.springframework.http.MediaType;

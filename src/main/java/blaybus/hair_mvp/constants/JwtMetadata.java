@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.auth.dto;
+package blaybus.hair_mvp.constants;
 
 
 public class JwtMetadata {
