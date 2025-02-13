@@ -35,11 +35,11 @@ public class Designer {
     @Column(name = "region", nullable = false)
     private String region;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "styling", nullable = false)
+    private String styling;
 
     @Column(name = "f2f_consult_fee", nullable = false)
-    private int f2fConsultFee;
+    private int offlineConsultFee;
 
     @Column(name = "online_consult_fee", nullable = false)
     private int onlineConsultFee;
@@ -51,12 +51,12 @@ public class Designer {
     private String bio;
 
     @Builder
-    public Designer(String name, String shopAddress, String region, String category, int f2fConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
+    public Designer(String name, String shopAddress, String region, String styling, int offlineConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
         this.name = name;
         this.shopAddress = shopAddress;
         this.region = region;
-        this.category = category;
-        this.f2fConsultFee = f2fConsultFee;
+        this.styling = styling;
+        this.offlineConsultFee = offlineConsultFee;
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;

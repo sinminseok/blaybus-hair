@@ -27,7 +27,9 @@ public class RequestMatcherHolder {
             new RequestInfo(GET, "/clients/*", Role.CLIENT),
             //  디자이너 사용자
             new RequestInfo(POST, "/designers/*", Role.DESIGNER),
-            new RequestInfo(GET, "/designers/*", Role.DESIGNER)
+            new RequestInfo(GET, "/designers/*", Role.DESIGNER),
+
+            new RequestInfo(GET, "/v1/api/designer/*", null)
     );
 
     private final ConcurrentHashMap<String, RequestMatcher> reqMatcherCacheMap = new ConcurrentHashMap<>();

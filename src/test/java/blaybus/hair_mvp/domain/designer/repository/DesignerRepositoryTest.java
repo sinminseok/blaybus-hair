@@ -16,8 +16,6 @@ class DesignerRepositoryTest {
     @Transactional
     void test() {
         Designer designer = OptionalUtil.getOrElseThrow(designerRepository.findByName("이초 디자이너"), "디자이너 정보가 존재하지 않습니다.");
-        designer.getRegions().forEach(region -> {
-            System.out.println(region.getName());
-        });
+        System.out.println(designer);
     }
 }

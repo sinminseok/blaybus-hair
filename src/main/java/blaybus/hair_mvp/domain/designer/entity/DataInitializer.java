@@ -1,13 +1,11 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
+import blaybus.hair_mvp.domain.designer.service.DesignerService;
 import com.opencsv.CSVReader;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -37,24 +35,19 @@ public class DataInitializer {
                         String name = values[0].trim();
                         String shopAddress = values[1].trim();
                         String region = values[2].trim();
-                        String category = values[3].trim();
+                        String styling = values[3].trim();
                         if (values[4] == null || values[4].trim().isEmpty()) {
                             System.out.println(values[4]);
                         }
-                        int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
+                        int offlineConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
                         int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
                         String[] splitMeetingType = values[6].split(",");
                         MeetingType meetingType = null;
                         if (splitMeetingType.length == 1) {
-                            meetingType = values[6].equals("대면") ? MeetingType.MEETING : MeetingType.VIDEO_MEETING;
+                            meetingType = values[6].equals("대면") ? MeetingType.OFFLINE : MeetingType.ONLINE;
                         } else if (splitMeetingType.length == 2) {
                             meetingType = MeetingType.BOTH;
-
                         }
-//                        MeetingType meetingType = values[6].contains("대면") && values[6].contains("비대면")
-//                                ? MeetingType.BOTH
-//                                : values[6].equals("대면") ? MeetingType.MEETING
-//                                        : MeetingType.VIDEO_MEETING;
                         String bio = values[7];
 
                         designerRepository.save(
@@ -62,8 +55,8 @@ public class DataInitializer {
                                         .name(name)
                                         .shopAddress(shopAddress)
                                         .region(region)
-                                        .category(category)
-                                        .f2fConsultFee(f2fConsultFee)
+                                        .styling(styling)
+                                        .offlineConsultFee(offlineConsultFee)
                                         .onlineConsultFee(onlineConsultFee)
                                         .meetingType(meetingType)
                                         .bio(bio)

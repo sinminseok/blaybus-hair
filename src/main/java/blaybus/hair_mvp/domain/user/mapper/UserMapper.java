@@ -14,8 +14,8 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "role", expression = "java(blaybus.hair_mvp.domain.user.entity.Role.CLIENT)")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", expression = "java(blaybus.hair_mvp.domain.user.entity.Role.CLIENT)")
     User toEntity(UserSignupRequest userSignupRequest);
 
 }
