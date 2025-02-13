@@ -38,6 +38,9 @@ public class DataInitializer {
                         String shopAddress = values[1].trim();
                         String region = values[2].trim();
                         String category = values[3].trim();
+                        if (values[4] == null || values[4].trim().isEmpty()) {
+                            System.out.println(values[4]);
+                        }
                         int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
                         int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
                         String[] splitMeetingType = values[6].split(",");
