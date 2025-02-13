@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
+
 group = 'Blaybus'
 version = '0.0.1-SNAPSHOT'
 
@@ -24,10 +25,16 @@ repositories {
 }
 
 dependencies {
-	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
-	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
-	implementation("org.mapstruct:mapstruct:1.5.3.Final")
-	implementation("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+	ext {
+		JJWT_VERSION = "0.12.5"
+	}
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+	implementation "org.mapstruct:mapstruct:1.5.3.Final"
+	implementation "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 	implementation 'com.google.oauth-client:google-oauth-client:1.34.0'
 	implementation 'com.google.api-client:google-api-client:2.0.0'
 	implementation 'com.google.http-client:google-http-client-jackson2:1.40.1'
@@ -38,17 +45,36 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-	ext {
-		JJWT_VERSION = "0.12.5"
-	}
 	implementation "io.jsonwebtoken:jjwt-api:${JJWT_VERSION}"
 	runtimeOnly "io.jsonwebtoken:jjwt-gson:${JJWT_VERSION}"
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:${JJWT_VERSION}"
+
+	//querydsl
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// [3] Querydsl 설정부
+def generated = 'src/main/generated'
+
+// [4] querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// [5] java source set 에 querydsl QClass 위치 추가
+sourceSets {
+	main.java.srcDirs += [ generated ]
+}
+
+// [6] gradle clean 시에 QClass 디렉토리 삭제
+clean {
+	delete file(generated)
 }
 
 tasks.named('test') {

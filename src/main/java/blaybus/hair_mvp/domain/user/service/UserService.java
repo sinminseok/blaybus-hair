@@ -20,11 +20,7 @@ public class UserService {
      * 사용자 계정 생성 메서드
      */
     public void save(final UserSignupRequest request){
-        System.out.println(request.getEmail());
-        System.out.println("------------");
         User user = userMapper.toEntity(request);
-        System.out.println(user.getEmail());
-        System.out.println(user.getName());
         userRepository.save(user);
     }
 

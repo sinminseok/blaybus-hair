@@ -2,7 +2,7 @@ package blaybus.hair_mvp.auth.service;
 
 import java.time.Duration;
 
-import blaybus.hair_mvp.auth.dto.JwtMetadata;
+import blaybus.hair_mvp.constants.JwtMetadata;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;

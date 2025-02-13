@@ -1,9 +1,9 @@
 package blaybus.hair_mvp.auth.service;
 
 import blaybus.hair_mvp.auth.dto.LoginResponse;
-import blaybus.hair_mvp.auth.jwt.AccessTokenPayload;
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
 import blaybus.hair_mvp.auth.jwt.JwtService;
-import blaybus.hair_mvp.auth.jwt.RefreshTokenPayload;
+import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
 import blaybus.hair_mvp.domain.user.entity.RefreshToken;
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.repository.RefreshTokenRepository;
@@ -39,19 +39,20 @@ public class LoginService {
     @Transactional
     public LoginResponse login(String email){
         User user = getValidatedUser(email);
-        refreshTokenRepository.findByUser(user).ifPresent(refreshTokenRepository::delete);
-        RefreshToken saved = refreshTokenRepository.save(RefreshToken.builder()
-                        .user(user)
-                        .expiredAt(LocalDateTime.now().plus(Duration.ofMillis(refreshKeyExpirationInMs)))
-                .build());
-
+        RefreshToken updateRefreshToken = updateRefreshToken(user);
         AccessTokenPayload accessTokenPayload = new AccessTokenPayload(user.getEmail(), user.getRole(), new Date());
         String accessToken = jwtService.createAccessToken(accessTokenPayload);
-        String refreshToken = jwtService.createRefreshToken(new RefreshTokenPayload(saved.getId().toString(), new Date()));
-
+        String refreshToken = jwtService.createRefreshToken(new RefreshTokenPayload(updateRefreshToken.getId().toString(), new Date()));
         ResponseCookie accessTokenCookie = cookieService.createAccessTokenCookie(accessToken, Duration.ofMillis(accessKeyExpirationInMs));
-
         return new LoginResponse(user.getRole(), accessTokenCookie, refreshToken);
+    }
+
+    private RefreshToken updateRefreshToken(User user){
+        refreshTokenRepository.findByUser(user).ifPresent(refreshTokenRepository::delete);
+        return refreshTokenRepository.save(RefreshToken.builder()
+                .user(user)
+                .expiredAt(LocalDateTime.now().plus(Duration.ofMillis(refreshKeyExpirationInMs)))
+                .build());
     }
 
     private User getValidatedUser(String email){
@@ -59,10 +60,6 @@ public class LoginService {
         if(user == null){
             throw new EmailExistExceptionCode(ErrorResponseCode.NOT_FOUND, "존재하지 않는 이메일 입니다.");
         }
-//        if(!passwordEncoder.matches(password, user.getPassword())){
-//            throw new PasswordMatchExceptionCode(ErrorResponseCode.NOT_MATCH_PASSWORD, "비밀번호가 일치하지 않습니다.");
-//        }
         return user;
     }
-
 }

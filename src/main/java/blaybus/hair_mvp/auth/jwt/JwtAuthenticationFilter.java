@@ -5,7 +5,8 @@ import java.util.List;
 
 import blaybus.hair_mvp.auth.FilterExceptionResolver;
 import blaybus.hair_mvp.auth.RequestMatcherHolder;
-import blaybus.hair_mvp.auth.dto.JwtMetadata;
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
+import blaybus.hair_mvp.constants.JwtMetadata;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,20 +40,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            final String accessToken = getAccessTokenFromCookie(request);
-            Claims claims = jwtService.verifyToken(accessToken);
-            AccessTokenPayload accessTokenPayload = jwtService.createAccessTokenPayload(claims);
-            var email = accessTokenPayload.email();
-            var role = accessTokenPayload.roleEnum().name();
-            GrantedAuthority authority = new SimpleGrantedAuthority(role);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
+            validateAccessToken(request, response, filterChain);
 
         } catch (JwtException ex) {
             jwtFilterExceptionResolver.setResponse(response, ex);
         }
 
+    }
+
+    private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        final String accessToken = getAccessTokenFromCookie(request);
+        Claims claims = jwtService.verifyToken(accessToken);
+        AccessTokenPayload accessTokenPayload = jwtService.createAccessTokenPayload(claims);
+        var email = accessTokenPayload.email();
+        var role = accessTokenPayload.roleEnum().name();
+        GrantedAuthority authority = new SimpleGrantedAuthority(role);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        filterChain.doFilter(request, response);
     }
 
     private String getAccessTokenFromCookie(HttpServletRequest request) {
