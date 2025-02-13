@@ -3,6 +3,9 @@ package blaybus.hair_mvp.domain.kakao_Payment.controller;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoApproveResponse;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoReadyResponse;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.PaymentRequest;
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.kakao_Payment.repository.PaymentRepository;
 import blaybus.hair_mvp.domain.kakao_Payment.service.KakaoPayService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,20 +20,30 @@ import org.springframework.web.bind.annotation.*;
 public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
+    private final PaymentRepository paymentRepository;
 
     @PostMapping("/ready")
     public ResponseEntity<?> requestPayment(@RequestBody PaymentRequest request){
         System.out.println("결제 요청 도착 :" + request );
         KakaoReadyResponse kakaoReadyResponse = kakaoPayService.kakaoPayReady(request);
+        System.out.println("tid : "+ kakaoReadyResponse.getTid());
         SuccessResponse response = new SuccessResponse(true,"결제 요청 성공", kakaoReadyResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/approve")
-    public ResponseEntity<?> successPayment(@RequestParam("pg_token") String pgToken,@RequestParam("orderId") String orderId){
-        KakaoApproveResponse kakaoApproveResponse = kakaoPayService.kakaoPayApprove(pgToken, orderId);
+    public ResponseEntity<?> successPayment( @RequestParam("pg_token") String pgToken,@RequestParam("orderId") String orderId){
+
+        Payment payment = paymentRepository.findByOrderId(orderId)
+                .orElseThrow(() ->  new RuntimeException("존재하지 않은 주문아이디"));
+        String tid = payment.getTid();
+
+        KakaoApproveResponse kakaoApproveResponse = kakaoPayService.kakaoPayApprove(tid, pgToken);
+        System.out.println("pgToken : "+ pgToken);
+
         SuccessResponse response = new SuccessResponse(true,"결제 승인 성공",kakaoApproveResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
+        // 추후에 리다이렉트 경로 추가
     }
 
     @GetMapping("/cancel")

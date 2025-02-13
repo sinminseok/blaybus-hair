@@ -20,7 +20,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       database-platform: org.hibernate.dialect.MySQLDialect
       defer-datasource-initialization: true
     properties:
@@ -39,4 +39,8 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+kakaopay:
+  secret-key: ${KAKAO_SECRET_KEY}
+  cid: ${CID}
 
