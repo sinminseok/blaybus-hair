@@ -1,5 +1,6 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
+import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,9 @@ public class Designer {
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
     private List<DesignerRegion> regions;
 
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
     @Column(name = "category", nullable = false)
     private String category;
 
@@ -66,5 +70,10 @@ public class Designer {
 
     public void addRegion(DesignerRegion region) {
         this.regions.add(region);
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+        reservation.setDesigner(this);
     }
 }

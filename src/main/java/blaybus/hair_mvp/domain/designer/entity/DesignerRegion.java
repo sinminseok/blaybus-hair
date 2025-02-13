@@ -30,6 +30,7 @@ public class DesignerRegion {
     @JoinColumn(name = "designer_id", nullable = false)
     Designer designer;
 
+
     public DesignerRegion(String name, Designer designer) {
         this.name = name;
         this.designer = designer;
