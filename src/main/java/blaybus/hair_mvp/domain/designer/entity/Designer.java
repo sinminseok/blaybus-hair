@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
@@ -52,6 +53,7 @@ public class Designer {
     @Column(name = "bio", length = 30)
     private String bio;
 
+    @Builder
     public Designer(String name, String shopAddress, String category, int f2fConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
         this.name = name;
         this.shopAddress = shopAddress;

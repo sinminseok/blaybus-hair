@@ -20,7 +20,7 @@ import org.hibernate.annotations.UuidGenerator;
 public class DesignerRegion {
     @Id
     @UuidGenerator
-    @Column(name = "Region_id", nullable = false, updatable = false)
+    @Column(name = "region_id", nullable = false, updatable = false)
     private UUID id;
 
     @Column(name = "name", nullable = false)

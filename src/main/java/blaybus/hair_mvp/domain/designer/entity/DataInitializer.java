@@ -37,19 +37,27 @@ public class DataInitializer {
                         String[] values = line.split(",");
 
                         String name = values[0].trim();
-                        String address = values[1].trim();
+                        String shopAddress = values[1].trim();
                         String[] regions = values[2].split("/");
-                        String specialty = values[3].trim();
-                        int faceToFacePrice = Integer.parseInt(values[4].replace(",", "").trim());
-                        int remotePrice = Integer.parseInt(values[5].replace(",", "").trim());
+                        String category = values[3].trim();
+                        int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
+                        int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
                         MeetingType meetingType = values[6].contains("대면") && values[6].contains("비대면")
                                 ? MeetingType.BOTH
                                 : values[6].contains("대면") ? MeetingType.MEETING
                                         : MeetingType.VIDEO_MEETING;
-                        String intro = values[7].trim();
+                        String bio = values[7].trim();
 
                         Designer designer = designerRepository.save(
-                                new Designer(name, address, specialty, faceToFacePrice, remotePrice, meetingType, intro));
+                                Designer.builder()
+                                        .name(name)
+                                        .shopAddress(shopAddress)
+                                        .category(category)
+                                        .f2fConsultFee(f2fConsultFee)
+                                        .onlineConsultFee(onlineConsultFee)
+                                        .meetingType(meetingType)
+                                        .bio(bio)
+                                        .build());
 
                         Arrays.stream(regions).map(String::trim).forEach(region -> {
                             designerRegionRepository.save(new DesignerRegion(region, designer));
