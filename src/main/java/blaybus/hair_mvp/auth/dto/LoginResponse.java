@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(force = true)
-public class LoginResultDto {
+public class LoginResponse {
     private Role role;
     private String refreshToken;
     private ResponseCookie accessTokenCookie;
 
     @Builder
-    public LoginResultDto(Role role, ResponseCookie responseCookie, String refreshToken) {
+    public LoginResponse(Role role, ResponseCookie responseCookie, String refreshToken) {
         this.role = role;
         this.refreshToken = refreshToken;
         this.accessTokenCookie = responseCookie;
