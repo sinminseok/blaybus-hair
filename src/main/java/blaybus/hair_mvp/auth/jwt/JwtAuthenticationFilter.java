@@ -7,7 +7,17 @@ import java.util.Optional;
 import blaybus.hair_mvp.auth.FilterExceptionResolver;
 import blaybus.hair_mvp.auth.RequestMatcherHolder;
 import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
+import blaybus.hair_mvp.auth.dto.LoginResponse;
+import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
+import blaybus.hair_mvp.auth.service.LoginService;
 import blaybus.hair_mvp.constants.JwtMetadata;
+import blaybus.hair_mvp.domain.user.entity.RefreshToken;
+import blaybus.hair_mvp.domain.user.repository.RefreshTokenRepository;
+import blaybus.hair_mvp.exception.ErrorResponseCode;
+import blaybus.hair_mvp.exception.code.AuthExceptionCode;
+import blaybus.hair_mvp.utils.SuccessResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +43,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final ObjectMapper objectMapper;
     private final JwtService jwtService;
+    private final LoginService loginService;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final FilterExceptionResolver<JwtException> jwtFilterExceptionResolver;
     private final RequestMatcherHolder requestMatcherHolder;
 
@@ -41,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            //validateRefreshToken(request, response, filterChain);
+            validateRefreshToken(request, response);
             validateAccessToken(request, response, filterChain);
         } catch (JwtException ex) {
             jwtFilterExceptionResolver.setResponse(response, ex);
@@ -49,11 +62,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    private void validateRefreshToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+
+    private void validateRefreshToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final Optional<String> refreshToken = getRefreshTokenFromCookie(request);
         if(refreshToken.isEmpty()) return;
-        Claims claims = jwtService.verifyToken(refreshToken.get());
-
+        jwtService.verifyToken(refreshToken.get());
+        //인증 통과
+        Optional<RefreshToken> byToken = refreshTokenRepository.findByToken(refreshToken.get());
+        if(byToken.isEmpty()){
+            throw new AuthExceptionCode(ErrorResponseCode.FAIL_LOGIN, "refreshToken 인증 실패");
+        }
+        LoginResponse loginResponse = loginService.login(byToken.get().getUser().getEmail());
+        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().getValue());
+        response.addHeader(HttpHeaders.AUTHORIZATION, loginResponse.getRefreshToken());
+        SuccessResponse apiResponse = new SuccessResponse(false,  "JWT Reissue", null);
+        String responseBody = objectMapper.writeValueAsString(apiResponse);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.getWriter().write(responseBody);
+        response.getWriter().flush();
+        response.getWriter().close();
+        return;
     }
 
     private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
