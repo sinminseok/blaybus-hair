@@ -1,5 +1,6 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
+import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,7 +8,9 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,11 +39,8 @@ public class Designer {
     @Column(name = "region", nullable = false)
     private String region;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations;
-
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "styling", nullable = false)
+    private String styling;
 
     @Column(name = "f2f_consult_fee", nullable = false)
     private int offlineConsultFee;
@@ -54,6 +54,9 @@ public class Designer {
     @Column(name = "bio", length = 30)
     private String bio;
 
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
     @Builder
     public Designer(String name, String shopAddress, String region, String styling, int offlineConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
         this.name = name;
@@ -64,10 +67,6 @@ public class Designer {
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;
-    }
-
-    public void addRegion(DesignerRegion region) {
-        this.regions.add(region);
     }
 
     public void addReservation(Reservation reservation) {
