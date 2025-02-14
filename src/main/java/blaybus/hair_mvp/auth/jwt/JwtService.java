@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
+import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
 import blaybus.hair_mvp.domain.user.entity.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,7 +45,6 @@ public class JwtService {
     public AccessTokenPayload createAccessTokenPayload(Claims payload) {
         String roleString = payload.get("role", String.class);
         Role roleEnum = Role.valueOf(roleString);
-
         return new AccessTokenPayload(
                 payload.getSubject(),
                 roleEnum,
@@ -68,7 +69,7 @@ public class JwtService {
 
     public String createRefreshToken(RefreshTokenPayload jwtPayload) {
         return Jwts.builder()
-                .subject(jwtPayload.tokenId())
+                .subject(jwtPayload.email())
                 .issuer(issuer)
                 .issuedAt(jwtPayload.issuedAt())
                 .expiration(new Date(jwtPayload.issuedAt().getTime() + refreshKeyExpirationInMs))
