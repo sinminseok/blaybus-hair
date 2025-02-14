@@ -29,6 +29,10 @@ public class RequestMatcherHolder {
             new RequestInfo(POST, "/designers/*", Role.DESIGNER),
             new RequestInfo(GET, "/designers/*", Role.DESIGNER),
             // 카카오페이
+            new RequestInfo(POST,"/open-api.kakaopay.com/*",null),
+            new RequestInfo(GET,"/open-api.kakaopay.com/*",null),
+            new RequestInfo(POST, "/online-payment.kakaopay.com/*",null),
+            new RequestInfo(GET, "/online-payment.kakaopay.com/*",null),
             new RequestInfo(POST,"/online/v1/payment/*",null),
             new RequestInfo(GET,"/online/v1/payment/*",null)
 

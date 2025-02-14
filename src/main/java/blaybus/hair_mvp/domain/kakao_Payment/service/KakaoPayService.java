@@ -1,6 +1,6 @@
 package blaybus.hair_mvp.domain.kakao_Payment.service;
 
-import blaybus.hair_mvp.domain.kakao_Payment.ApprovedPaymentMapper;
+import blaybus.hair_mvp.domain.kakao_Payment.mapper.ApprovedPaymentMapper;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoApproveResponse;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoReadyResponse;
 import blaybus.hair_mvp.domain.kakao_Payment.dto.PaymentRequest;
@@ -16,16 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -111,7 +108,9 @@ public class KakaoPayService {
                     KAKAO_PAY_API_HOST + "/online/v1/payment/approve", request, KakaoApproveResponse.class);
 
             log.info("결제 승인 응답 객체 :" + KakaoApproveResponse.class);
-            ApprovedPayment approvedPayment = approvedPaymentMapper.toEntity(response,payment);
+            ApprovedPayment approvedPayment = approvedPaymentMapper.toEntity(response);
+
+
             payment.setStatus(Status.SUCCESS);
             paymentRepository.save(payment);
             approvedPaymentRepository.save(approvedPayment);

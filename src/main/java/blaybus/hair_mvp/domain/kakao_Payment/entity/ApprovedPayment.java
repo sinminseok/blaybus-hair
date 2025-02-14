@@ -23,15 +23,15 @@ public class ApprovedPayment {
     private String aid;  // 승인 ID
     private String tid;  // 결제 고유 번호
     private String cid;  // 가맹점 코드
-    private String partnerOrderId;  // 주문번호
-    private String partnerUserId;  // 사용자 ID
+    private String partner_order_id;  // 주문번호
+    private String partner_user_id;  // 사용자 ID
 //    private String paymentMethodType;  // 결제 수단
 
     private Amount amount;
 
-    private LocalDateTime approvedAt;
+    private LocalDateTime approved_at;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 }

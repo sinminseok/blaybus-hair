@@ -3,6 +3,8 @@ package blaybus.hair_mvp.domain.kakao_Payment.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -24,4 +26,11 @@ public class Payment {
 
     @Embedded
     private Amount amount;
+
+    private LocalDateTime created_at;
+
+    @OneToOne(mappedBy = "payment",cascade = CascadeType.ALL)
+    private ApprovedPayment approvedPayment;
+
+
 }
