@@ -28,6 +28,7 @@ dependencies {
 	ext {
 		JJWT_VERSION = "0.12.5"
 	}
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"

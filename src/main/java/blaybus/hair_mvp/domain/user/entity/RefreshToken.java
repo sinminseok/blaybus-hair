@@ -23,9 +23,13 @@ public class RefreshToken {
     private UUID id;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private User user;
+
+    @Setter
+    @Column(name = "token", nullable = false)
+    private String token;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,8 +42,9 @@ public class RefreshToken {
     private LocalDateTime expiredAt;
 
     @Builder
-    public RefreshToken(User user, LocalDateTime expiredAt) {
+    public RefreshToken(User user, String token, LocalDateTime expiredAt) {
         this.user = user;
+        this.token = token;
         this.createdAt = LocalDateTime.now();
         this.expiredAt = expiredAt;
     }

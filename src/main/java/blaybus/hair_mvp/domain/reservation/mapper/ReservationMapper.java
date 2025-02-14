@@ -12,5 +12,7 @@ public interface ReservationMapper {
     ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "designer", ignore = true)
+    @Mapping(target = "user", ignore = true)
     Reservation toEntity(ReservationRequest reservationRequest);
 }

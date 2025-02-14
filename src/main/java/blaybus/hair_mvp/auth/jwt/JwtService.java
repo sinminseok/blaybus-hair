@@ -45,7 +45,6 @@ public class JwtService {
     public AccessTokenPayload createAccessTokenPayload(Claims payload) {
         String roleString = payload.get("role", String.class);
         Role roleEnum = Role.valueOf(roleString);
-
         return new AccessTokenPayload(
                 payload.getSubject(),
                 roleEnum,
@@ -70,7 +69,7 @@ public class JwtService {
 
     public String createRefreshToken(RefreshTokenPayload jwtPayload) {
         return Jwts.builder()
-                .subject(jwtPayload.tokenId())
+                .subject(jwtPayload.email())
                 .issuer(issuer)
                 .issuedAt(jwtPayload.issuedAt())
                 .expiration(new Date(jwtPayload.issuedAt().getTime() + refreshKeyExpirationInMs))

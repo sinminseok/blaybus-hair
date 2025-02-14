@@ -28,6 +28,8 @@ public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
     public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
 
+    public final StringPath token = createString("token");
+
     public final QUser user;
 
     public QRefreshToken(String variable) {

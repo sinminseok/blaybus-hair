@@ -25,7 +25,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class LoginService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CookieService cookieService;
@@ -39,18 +38,20 @@ public class LoginService {
     @Transactional
     public LoginResponse login(String email){
         User user = getValidatedUser(email);
-        RefreshToken updateRefreshToken = updateRefreshToken(user);
+        String refreshToken = jwtService.createRefreshToken(new RefreshTokenPayload(user.getEmail(), new Date()));
+        updateRefreshToken(user, refreshToken);
         AccessTokenPayload accessTokenPayload = new AccessTokenPayload(user.getEmail(), user.getRole(), new Date());
         String accessToken = jwtService.createAccessToken(accessTokenPayload);
-        String refreshToken = jwtService.createRefreshToken(new RefreshTokenPayload(updateRefreshToken.getId().toString(), new Date()));
         ResponseCookie accessTokenCookie = cookieService.createAccessTokenCookie(accessToken, Duration.ofMillis(accessKeyExpirationInMs));
         return new LoginResponse(user.getRole(), accessTokenCookie, refreshToken);
     }
 
-    private RefreshToken updateRefreshToken(User user){
+    private RefreshToken updateRefreshToken(User user, String token){
+        System.out.println("tokentoken = " + token);
         refreshTokenRepository.findByUser(user).ifPresent(refreshTokenRepository::delete);
         return refreshTokenRepository.save(RefreshToken.builder()
                 .user(user)
+                .token(token)
                 .expiredAt(LocalDateTime.now().plus(Duration.ofMillis(refreshKeyExpirationInMs)))
                 .build());
     }

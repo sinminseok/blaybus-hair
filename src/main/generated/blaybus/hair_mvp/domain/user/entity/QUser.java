@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -34,6 +35,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath name = createString("name");
 
     public final StringPath profileUrl = createString("profileUrl");
+
+    public final ListPath<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation> reservations = this.<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation>createList("reservations", blaybus.hair_mvp.domain.reservation.entity.Reservation.class, blaybus.hair_mvp.domain.reservation.entity.QReservation.class, PathInits.DIRECT2);
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
