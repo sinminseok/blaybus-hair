@@ -16,6 +16,5 @@ public class DesignerResponse {
     private String styling;
     private int offlineConsultFee;
     private int onlineConsultFee;
-    private MeetingType meetingType;
     private String bio;
 }
