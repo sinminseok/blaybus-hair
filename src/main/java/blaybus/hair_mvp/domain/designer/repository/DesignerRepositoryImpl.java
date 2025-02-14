@@ -74,7 +74,7 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
                                 .when(stylingCondition).then(1)
                                 .otherwise(2)
                                 .asc(),
-                        designer.name.asc()
+                        designer.rating.desc()
                 )
                 .offset((long) page * size)
                 .limit(size)
@@ -94,7 +94,7 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
                                 .when(stylingCondition).then(2)
                                 .otherwise(3)
                                 .asc(),
-                        designer.name.asc()
+                        designer.rating.desc()
                 )
                 .offset((long) page * size)
                 .limit(size)

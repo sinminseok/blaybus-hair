@@ -17,4 +17,5 @@ public class DesignerResponse {
     private int offlineConsultFee;
     private int onlineConsultFee;
     private String bio;
+    private float rating;
 }

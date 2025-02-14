@@ -54,11 +54,14 @@ public class Designer {
     @Column(name = "bio", length = 30)
     private String bio;
 
+    @Column(name = "rating")
+    private float rating;
+
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
     @Builder
-    public Designer(String name, String shopAddress, String region, String styling, int offlineConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
+    public Designer(String name, String shopAddress, String region, String styling, int offlineConsultFee, int onlineConsultFee, MeetingType meetingType, String bio, float rating) {
         this.name = name;
         this.shopAddress = shopAddress;
         this.region = region;
@@ -67,6 +70,7 @@ public class Designer {
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;
+        this.rating = rating;
     }
 
     public void addReservation(Reservation reservation) {

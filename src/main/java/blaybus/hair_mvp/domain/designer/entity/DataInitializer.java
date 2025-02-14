@@ -49,6 +49,7 @@ public class DataInitializer {
                             meetingType = MeetingType.BOTH;
                         }
                         String bio = values[7];
+                        float rating = Float.parseFloat(values[8]);
 
                         designerRepository.save(
                                 Designer.builder()
@@ -60,6 +61,7 @@ public class DataInitializer {
                                         .onlineConsultFee(onlineConsultFee)
                                         .meetingType(meetingType)
                                         .bio(bio)
+                                        .rating(rating)
                                         .build());
                     }
                 } catch (Exception e) {
