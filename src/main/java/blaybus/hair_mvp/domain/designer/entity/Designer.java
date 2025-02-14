@@ -1,5 +1,6 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -35,8 +36,11 @@ public class Designer {
     @Column(name = "region", nullable = false)
     private String region;
 
-    @Column(name = "styling", nullable = false)
-    private String styling;
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
+    @Column(name = "category", nullable = false)
+    private String category;
 
     @Column(name = "f2f_consult_fee", nullable = false)
     private int offlineConsultFee;
@@ -60,5 +64,14 @@ public class Designer {
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;
+    }
+
+    public void addRegion(DesignerRegion region) {
+        this.regions.add(region);
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+        reservation.setDesigner(this);
     }
 }
