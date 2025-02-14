@@ -25,9 +25,9 @@ public class ApprovedPayment {
     private String cid;  // 가맹점 코드
     private String partnerOrderId;  // 주문번호
     private String partnerUserId;  // 사용자 ID
-    private String paymentMethodType;  // 결제 수단
+//    private String paymentMethodType;  // 결제 수단
 
-    private int amount;
+    private Amount amount;
 
     private LocalDateTime approvedAt;
 

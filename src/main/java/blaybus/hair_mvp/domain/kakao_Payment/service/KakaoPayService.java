@@ -58,7 +58,7 @@ public class KakaoPayService {
         params.put("partner_user_id", request.getUserId());
         params.put("item_name", request.getItemName());
         params.put("quantity","1");
-        params.put("total_amount", String.valueOf(request.getAmount()));
+        params.put("total_amount", String.valueOf(request.getAmount().getTotal()));
         params.put("tax_free_amount","0");
         params.put("approval_url","http://localhost:8080/online/v1/payment/approve?orderId="+request.getOrderId());
         params.put("cancel_url","http://localhost:8080/online/v1/payment/cancel");

@@ -1,6 +1,8 @@
 package blaybus.hair_mvp.domain.kakao_Payment.dto;
 
 
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -12,6 +14,7 @@ public class PaymentRequest {
     private String orderId;
     private String userId;
     private String itemName;
-    private int amount;
+    @NotBlank
+    private Amount amount;
 
 }

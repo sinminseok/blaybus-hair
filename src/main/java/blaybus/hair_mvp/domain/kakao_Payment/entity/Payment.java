@@ -22,6 +22,6 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-
-    private int amount;
+    @Embedded
+    private Amount amount;
 }
