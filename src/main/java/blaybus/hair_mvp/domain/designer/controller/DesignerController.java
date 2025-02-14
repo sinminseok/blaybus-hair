@@ -7,9 +7,11 @@ import blaybus.hair_mvp.domain.designer.repository.DesignerRepositoryImpl;
 import blaybus.hair_mvp.domain.designer.service.DesignerService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,7 @@ public class DesignerController {
     /**
      * 사용자 선택 후 첫 화면 조회
      */
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<?> getDesigner(
             @RequestParam int page,
             @RequestParam int size,
@@ -42,7 +44,7 @@ public class DesignerController {
             @RequestParam String styling
             ){
         // 대면, 비대면 둘 다 선택한 경우 카테고리에 맞는 디자이너 조회
-        if (meetingType != MeetingType.BOTH) {
+        if (meetingType == MeetingType.BOTH) {
             List<DesignerResponse> designers = designerService.findDesignerBySty(page, size, styling);
             SuccessResponse<List<DesignerResponse>> response = new SuccessResponse<>(true, "대면/비대면 디자이너 조회 성공", designers);
             return ResponseEntity.ok(response);
@@ -67,6 +69,13 @@ public class DesignerController {
             @RequestParam(required = false) String maxPrice){
         List<DesignerResponse> designers = designerService.findDesignerByFilters(page, size, meetingType, styling, region, minPrice, maxPrice);
         SuccessResponse<List<DesignerResponse>> response = new SuccessResponse<>(true, "디자이너 필터링 조회 성공", designers);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{designerId}")
+    public ResponseEntity<?> getDesignerDetail(@PathVariable UUID designerId) {
+        Designer designer = designerService.findDesignerById(designerId);
+        SuccessResponse<Designer> response = new SuccessResponse<>(true, "디자이너 상세 조회 성공", designer);
         return ResponseEntity.ok(response);
     }
 }
