@@ -3,10 +3,7 @@ package blaybus.hair_mvp.domain.kakao_Payment.dto;
 
 
 import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
