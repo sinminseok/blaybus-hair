@@ -4,6 +4,7 @@ import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

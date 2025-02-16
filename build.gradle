@@ -28,6 +28,7 @@ dependencies {
 	ext {
 		JJWT_VERSION = "0.12.5"
 	}
+
 	implementation 'com.google.http-client:google-http-client:1.41.1'
 	//implementation 'com.google.apis:google-api-services-calendar:v3-rev411-1.18.0-rc'
 	implementation 'com.google.apis:google-api-services-calendar:v3-rev411-1.25.0'
@@ -37,6 +38,8 @@ dependencies {
 	implementation "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 	implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
@@ -48,9 +51,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+	implementation "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	implementation 'com.mysql:mysql-connector-j'
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final' // MapStruct
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final' // MapStruct Processor
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+
+	ext {
+		JJWT_VERSION = "0.12.5"
+	}
+	implementation("io.github.cdimascio:java-dotenv:5.2.2")
 	implementation "io.jsonwebtoken:jjwt-api:${JJWT_VERSION}"
 	runtimeOnly "io.jsonwebtoken:jjwt-gson:${JJWT_VERSION}"
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:${JJWT_VERSION}"
@@ -59,10 +75,17 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 
+	// csv 파싱
+	implementation 'com.opencsv:opencsv:5.5.2'
+
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 }
 
 // [3] Querydsl 설정부

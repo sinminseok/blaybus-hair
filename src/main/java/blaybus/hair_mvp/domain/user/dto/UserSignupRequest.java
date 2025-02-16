@@ -9,6 +9,5 @@ import lombok.Setter;
 @Builder
 public class UserSignupRequest {
     private String email;
-    private String profileUrl;
     private String name;
 }

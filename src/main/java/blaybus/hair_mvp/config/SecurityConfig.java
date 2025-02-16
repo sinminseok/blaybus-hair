@@ -48,6 +48,13 @@ public class SecurityConfig {
                                 .hasAnyAuthority(Role.CLIENT.name())
                                 .requestMatchers(requestMatcherHolder.getRequestMatchersByMinRole(Role.DESIGNER))
                                 .hasAnyAuthority(Role.DESIGNER.name())
+                                // kakao 테스트
+                                .requestMatchers("/open-api.kakaopay.com")
+                                .permitAll()
+                                .requestMatchers("/online-payment.kakaopay.com/*")
+                                .permitAll()
+                                .requestMatchers("/online/v1/payment/*")
+                                .permitAll()
                                 .anyRequest().authenticated()
                 );
 

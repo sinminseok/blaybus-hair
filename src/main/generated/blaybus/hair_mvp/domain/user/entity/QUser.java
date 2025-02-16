@@ -18,6 +18,8 @@ public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = -1053485015L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QUser user = new QUser("user");
 
     public final blaybus.hair_mvp.domain.common.QBaseTimeEntity _super = new blaybus.hair_mvp.domain.common.QBaseTimeEntity(this);
@@ -27,6 +29,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath email = createString("email");
 
+    public final blaybus.hair_mvp.aws.s3.entity.QS3File file;
+
     public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
 
     //inherited
@@ -34,7 +38,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath name = createString("name");
 
-    public final StringPath profileUrl = createString("profileUrl");
+    public final StringPath profileImage = createString("profileImage");
 
     public final ListPath<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation> reservations = this.<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation>createList("reservations", blaybus.hair_mvp.domain.reservation.entity.Reservation.class, blaybus.hair_mvp.domain.reservation.entity.QReservation.class, PathInits.DIRECT2);
 
@@ -43,15 +47,24 @@ public class QUser extends EntityPathBase<User> {
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
     public QUser(String variable) {
-        super(User.class, forVariable(variable));
+        this(User.class, forVariable(variable), INITS);
     }
 
     public QUser(Path<? extends User> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QUser(PathMetadata metadata) {
-        super(User.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QUser(PathMetadata metadata, PathInits inits) {
+        this(User.class, metadata, inits);
+    }
+
+    public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.file = inits.isInitialized("file") ? new blaybus.hair_mvp.aws.s3.entity.QS3File(forProperty("file")) : null;
     }
 
 }
