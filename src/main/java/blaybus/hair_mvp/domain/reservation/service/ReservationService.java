@@ -4,6 +4,7 @@ import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
+import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.reservation.mapper.ReservationMapper;
 import blaybus.hair_mvp.domain.reservation.repository.ReservationRepository;
@@ -36,7 +37,7 @@ public class ReservationService {
 
 
     @Transactional
-    public void save(final ReservationRequest request, final String userEmail) throws IOException {
+    public ReservationResponse save(final ReservationRequest request, final String userEmail){
         Reservation reservation = reservationMapper.toEntity(request);
         Designer designer = OptionalUtil.getOrElseThrow(designerRepository.findById(UUID.fromString(request.getDesignerId())), "존재하지 않는 디자이너 ID 입니다.");
         User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(userEmail), "존재하지 않는 사용자 ID 입니다.");
@@ -46,11 +47,11 @@ public class ReservationService {
         designer.addReservation(reservation);
         user.addReservation(reservation);
 
-
         if (request.getMeetingType().equals(MeetingType.MEETING)) {
             //todo 회의 후 논의
             //generateGoogleMeetLink(reservation, designer);
         }
+        return reservationMapper.toResponse(reservation, designer);
     }
 
     private void generateGoogleMeetLink(Reservation reservation, Designer designer) throws IOException {
