@@ -1,5 +1,6 @@
 package blaybus.hair_mvp.domain.user.entity;
 
+import blaybus.hair_mvp.aws.s3.entity.S3File;
 import blaybus.hair_mvp.domain.common.BaseTimeEntity;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import jakarta.persistence.*;
@@ -31,9 +32,13 @@ public class User extends BaseTimeEntity {
     @Setter
     private String name;
 
+    @Column(name = "profile_image")
     @Setter
-    @Column(name = "profile_url", nullable = true)
-    private String profileUrl;
+    private String profileImage;
+
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private S3File file;
 
     @Enumerated(EnumType.STRING)
     @Setter
@@ -45,5 +50,10 @@ public class User extends BaseTimeEntity {
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);
         reservation.setUser(this);
+    }
+
+    public void updateProfileImage(S3File file) {
+        this.file = file;
+        this.profileImage = file.getFileURL();
     }
 }
