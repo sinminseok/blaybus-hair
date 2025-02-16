@@ -36,17 +36,14 @@ public class Designer {
     @Column(name = "shop_address", nullable = false)
     private String shopAddress;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
-    private List<DesignerRegion> regions;
+    @Column(name = "region", nullable = false)
+    private String region;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> reservations;
-
-    @Column(name = "category", nullable = false)
-    private String category;
+    @Column(name = "styling", nullable = false)
+    private String styling;
 
     @Column(name = "f2f_consult_fee", nullable = false)
-    private int f2fConsultFee;
+    private int offlineConsultFee;
 
     @Column(name = "online_consult_fee", nullable = false)
     private int onlineConsultFee;
@@ -57,19 +54,23 @@ public class Designer {
     @Column(name = "bio", length = 30)
     private String bio;
 
+    @Column(name = "rating")
+    private float rating;
+
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;
+
     @Builder
-    public Designer(String name, String shopAddress, String category, int f2fConsultFee, int onlineConsultFee, MeetingType meetingType, String bio) {
+    public Designer(String name, String shopAddress, String region, String styling, int offlineConsultFee, int onlineConsultFee, MeetingType meetingType, String bio, float rating) {
         this.name = name;
         this.shopAddress = shopAddress;
-        this.category = category;
-        this.f2fConsultFee = f2fConsultFee;
+        this.region = region;
+        this.styling = styling;
+        this.offlineConsultFee = offlineConsultFee;
         this.onlineConsultFee = onlineConsultFee;
         this.meetingType = meetingType;
         this.bio = bio;
-    }
-
-    public void addRegion(DesignerRegion region) {
-        this.regions.add(region);
+        this.rating = rating;
     }
 
     public void addReservation(Reservation reservation) {
