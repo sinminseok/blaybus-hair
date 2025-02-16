@@ -49,6 +49,11 @@ thread:
     queue-capacity: 50
     max-pool-size: 8
 
+google:
+  calendar:
+    credentials: classpath:google-calendar-credentials.json
+    application-name: HairMVP
+
 logging:
   level:
     org.hibernate.SQL: debug

@@ -42,6 +42,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation> reservations = this.<blaybus.hair_mvp.domain.reservation.entity.Reservation, blaybus.hair_mvp.domain.reservation.entity.QReservation>createList("reservations", blaybus.hair_mvp.domain.reservation.entity.Reservation.class, blaybus.hair_mvp.domain.reservation.entity.QReservation.class, PathInits.DIRECT2);
 
+    public final ListPath<blaybus.hair_mvp.domain.review.entity.Review, blaybus.hair_mvp.domain.review.entity.QReview> reviews = this.<blaybus.hair_mvp.domain.review.entity.Review, blaybus.hair_mvp.domain.review.entity.QReview>createList("reviews", blaybus.hair_mvp.domain.review.entity.Review.class, blaybus.hair_mvp.domain.review.entity.QReview.class, PathInits.DIRECT2);
+
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
     public QUser(String variable) {

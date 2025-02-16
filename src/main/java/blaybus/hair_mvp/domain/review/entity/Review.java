@@ -1,39 +1,34 @@
-package blaybus.hair_mvp.domain.reservation.entity;
+package blaybus.hair_mvp.domain.review.entity;
 
+import blaybus.hair_mvp.domain.common.BaseTimeEntity;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
-import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "`reservation`")
+@Table(name = "`review`")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Builder
-public class Reservation {
+public class Review extends BaseTimeEntity {
 
     @Id
     @UuidGenerator
-    @Column(name = "reservation_id", nullable = false, updatable = false)
+    @Column(name = "review_id", nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "price", nullable = false)
-    private Integer price;
+    @Column(name = "star_point", nullable = false, updatable = false)
+    private Integer starPoint;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "meeting_type", nullable = false)
-    private MeetingType meetingType;
-
-    @Column(name = "reservation_at", nullable = false)
-    private LocalDateTime reservationAt;
+    @Column(name = "content", nullable = false, updatable = false)
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "designer_id", nullable = false)
@@ -44,9 +39,4 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
     private User user;
-
-    @Setter
-    @Column(name = "google_meet_link", nullable = true)
-    private String googleMeetLink;
-
 }

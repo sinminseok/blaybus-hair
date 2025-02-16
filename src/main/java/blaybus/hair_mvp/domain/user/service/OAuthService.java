@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
+import static blaybus.hair_mvp.constants.ErrorMessages.INVALID_GOOGLE_ID_TOKEN;
+
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
@@ -27,7 +29,7 @@ public class OAuthService {
 
         if (googleIdToken == null) {
             //todo 커스텀 처리
-            throw new IllegalBlockSizeException("Invalid ID token");
+            throw new IllegalBlockSizeException(INVALID_GOOGLE_ID_TOKEN);
         }
         System.out.println(googleIdToken.getPayload().getEmail());
 

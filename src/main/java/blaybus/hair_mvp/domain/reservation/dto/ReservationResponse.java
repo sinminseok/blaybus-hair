@@ -1,10 +1,16 @@
 package blaybus.hair_mvp.domain.reservation.dto;
 
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
-import java.util.UUID;
-import lombok.Builder;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Builder
 @Builder
 public class ReservationResponse {
    private UUID id;
