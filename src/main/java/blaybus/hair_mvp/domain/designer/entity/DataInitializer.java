@@ -1,12 +1,11 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
-import blaybus.hair_mvp.domain.designer.repository.DesignerRegionRepository;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import blaybus.hair_mvp.domain.designer.service.DesignerService;
+import com.opencsv.CSVReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -21,47 +20,49 @@ import org.springframework.core.io.ClassPathResource;
 public class DataInitializer {
 
     private final DesignerRepository designerRepository;
-    private final DesignerRegionRepository designerRegionRepository;
 
     @Bean
     public ApplicationRunner initData() {
         return args -> {
             if (designerRepository.count() == 0) { // 데이터가 없을 때만 mock 데이터 삽입
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                try (CSVReader csvReader = new CSVReader(new InputStreamReader(
                         new ClassPathResource("디자이너 목록 리스트 업.csv").getInputStream(), StandardCharsets.UTF_8))) {
 
-                    String line;
-                    br.readLine();
+                    List<String[]> designerList = csvReader.readAll();
+                    designerList.remove(0);
 
-                    while ((line = br.readLine()) != null) {
-                        String[] values = line.split(",");
-
+                    for (String[] values : designerList) {
                         String name = values[0].trim();
                         String shopAddress = values[1].trim();
-                        String[] regions = values[2].split("/");
-                        String category = values[3].trim();
-                        int f2fConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
+                        String region = values[2].trim();
+                        String styling = values[3].trim();
+                        if (values[4] == null || values[4].trim().isEmpty()) {
+                            System.out.println(values[4]);
+                        }
+                        int offlineConsultFee = Integer.parseInt(values[4].replace(",", "").trim());
                         int onlineConsultFee = Integer.parseInt(values[5].replace(",", "").trim());
-                        MeetingType meetingType = values[6].contains("대면") && values[6].contains("비대면")
-                                ? MeetingType.BOTH
-                                : values[6].contains("대면") ? MeetingType.MEETING
-                                        : MeetingType.VIDEO_MEETING;
-                        String bio = values[7].trim();
+                        String[] splitMeetingType = values[6].split(",");
+                        MeetingType meetingType = null;
+                        if (splitMeetingType.length == 1) {
+                            meetingType = values[6].equals("대면") ? MeetingType.OFFLINE : MeetingType.ONLINE;
+                        } else if (splitMeetingType.length == 2) {
+                            meetingType = MeetingType.BOTH;
+                        }
+                        String bio = values[7];
+                        float rating = Float.parseFloat(values[8]);
 
-                        Designer designer = designerRepository.save(
+                        designerRepository.save(
                                 Designer.builder()
                                         .name(name)
                                         .shopAddress(shopAddress)
-                                        .category(category)
-                                        .f2fConsultFee(f2fConsultFee)
+                                        .region(region)
+                                        .styling(styling)
+                                        .offlineConsultFee(offlineConsultFee)
                                         .onlineConsultFee(onlineConsultFee)
                                         .meetingType(meetingType)
                                         .bio(bio)
+                                        .rating(rating)
                                         .build());
-
-                        Arrays.stream(regions).map(String::trim).forEach(region -> {
-                            designerRegionRepository.save(new DesignerRegion(region, designer));
-                        });
                     }
                 } catch (Exception e) {
                     log.error("csv 파일 읽는 중 오류 발생", e);

@@ -25,6 +25,8 @@ public class RequestMatcherHolder {
             // 일반 사용자
             new RequestInfo(POST, "/clients/*", Role.CLIENT),
             new RequestInfo(GET, "/clients/*", Role.CLIENT),
+            // 디자이너 조회
+            new RequestInfo(GET, "/v1/api/designer/*", null),
             //  디자이너 사용자
             new RequestInfo(POST, "/designers/*", Role.DESIGNER),
             new RequestInfo(GET, "/designers/*", Role.DESIGNER),
