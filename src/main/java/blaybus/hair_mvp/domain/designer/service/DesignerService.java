@@ -28,8 +28,9 @@ public class DesignerService {
         return designerRepository.findAll(pageable).getContent();
     }
 
-    public Designer findDesignerById(UUID id) {
-        return OptionalUtil.getOrElseThrow(designerRepository.findById(id), "존재하지 않는 디자이너 ID 입니다.");
+    public DesignerResponse findDesignerById(UUID id) {
+        Designer designer = OptionalUtil.getOrElseThrow(designerRepository.findById(id), "존재하지 않는 디자이너 ID 입니다.");
+        return designerMapper.toResponse(designer);
     }
 
     public List<DesignerResponse> findDesignerBySty(int page, int size, String styling) {

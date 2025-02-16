@@ -74,8 +74,8 @@ public class DesignerController {
 
     @GetMapping("/{designerId}")
     public ResponseEntity<?> getDesignerDetail(@PathVariable UUID designerId) {
-        Designer designer = designerService.findDesignerById(designerId);
-        SuccessResponse<Designer> response = new SuccessResponse<>(true, "디자이너 상세 조회 성공", designer);
+        DesignerResponse designer = designerService.findDesignerById(designerId);
+        SuccessResponse<DesignerResponse> response = new SuccessResponse<>(true, "디자이너 상세 조회 성공", designer);
         return ResponseEntity.ok(response);
     }
 }

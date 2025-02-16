@@ -106,7 +106,7 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
         String[] stylings = styling.split(",");
         BooleanBuilder stylingCondition = new BooleanBuilder();
         for (String s : stylings) {
-            stylingCondition.or(designer.styling.contains(s)); // 'OR' 조건으로 포함 여부 체크
+            stylingCondition.or(designer.styling.contains(s));
         }
         return stylingCondition;
     }

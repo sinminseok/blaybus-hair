@@ -14,6 +14,7 @@ public class DesignerResponse {
     private String shopAddress;
     private String region;
     private String styling;
+    private MeetingType meetingType;
     private int offlineConsultFee;
     private int onlineConsultFee;
     private String bio;
