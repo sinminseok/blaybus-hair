@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/api/reservations")
@@ -23,7 +25,7 @@ public class ReservationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request){
+    public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request) throws IOException {
         reservationService.save(request, securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "예약 성공", null);
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -14,5 +14,6 @@ public interface ReservationMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "designer", ignore = true)
     @Mapping(target = "user", ignore = true)
+    @Mapping(target = "googleMeetLink", ignore = true)
     Reservation toEntity(ReservationRequest reservationRequest);
 }

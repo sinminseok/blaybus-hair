@@ -45,4 +45,8 @@ public class Reservation {
     @Setter
     private User user;
 
+    @Setter
+    @Column(name = "google_meet_link", nullable = true)
+    private String googleMeetLink;
+
 }
