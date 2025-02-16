@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-15T18:53:03+0900",
-    comments = "version: 1.5.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.12.1.jar, environment: Java 17.0.12 (Amazon.com Inc.)"
+    date = "2025-02-16T20:46:37+0900",
+    comments = "version: 1.5.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.12.1.jar, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -23,7 +23,6 @@ public class UserMapperImpl implements UserMapper {
 
         user.email( userSignupRequest.getEmail() );
         user.name( userSignupRequest.getName() );
-        user.profileUrl( userSignupRequest.getProfileUrl() );
 
         user.role( blaybus.hair_mvp.domain.user.entity.Role.CLIENT );
 

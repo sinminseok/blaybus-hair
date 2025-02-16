@@ -30,4 +30,8 @@ public class UserService {
     public boolean isExistUser(final String email){
         return userRepository.findByEmail(email).isPresent();
     }
+
+    public Optional<User> findByEmail(final String email){
+        return userRepository.findByEmail(email);
+    }
 }

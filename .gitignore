@@ -38,6 +38,5 @@ out/
 
 
 src/main/resources/local.env.env
-.env
-.env
+src/main/resources/application-aws.yml
 .env
