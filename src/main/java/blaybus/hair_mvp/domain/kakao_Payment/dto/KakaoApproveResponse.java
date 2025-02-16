@@ -3,11 +3,7 @@ package blaybus.hair_mvp.domain.kakao_Payment.dto;
 
 
 import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -22,7 +18,10 @@ public class KakaoApproveResponse {
     private String item_name;
     private int quantity;
     private Amount amount;
-    private LocalDateTime created_at;
-    private LocalDateTime approved_at;
+    private String created_at;
+    private String approved_at;
+
+    // 날짜 타입을 String 으로 해야 반환할 떄 null 값이 안생김
+
 
 }
