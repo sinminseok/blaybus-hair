@@ -8,4 +8,7 @@ public interface DesignerRepositoryCustom {
     List<Designer> searchDesigners(
             Integer page, Integer size, MeetingType meetingType, String styling,
             String region, String minPrice, String maxPrice);
-}
+
+    public List<Designer> findDesignerByConditions(int page, int size, String styling);
+    List<Designer> findDesignerByConditions(int page, int size, MeetingType meetingType, String styling);
+    }

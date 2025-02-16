@@ -6,7 +6,9 @@ import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.mapper.DesignerMapper;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepositoryImpl;
+import blaybus.hair_mvp.utils.OptionalUtil;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,19 +28,19 @@ public class DesignerService {
         return designerRepository.findAll(pageable).getContent();
     }
 
+    public DesignerResponse findDesignerById(UUID id) {
+        Designer designer = OptionalUtil.getOrElseThrow(designerRepository.findById(id), "존재하지 않는 디자이너 ID 입니다.");
+        return designerMapper.toResponse(designer);
+    }
+
     public List<DesignerResponse> findDesignerBySty(int page, int size, String styling) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(
-                Sort.Order.asc("meetingType"),
-                Sort.Order.asc("name")
-        ));
-        List<Designer> designers = designerRepository.findByStyling(styling, pageable).getContent();
+        List<Designer> designers = designerRepositoryImpl.findDesignerByConditions(page, size, styling);
         return designerMapper.toResponseList(designers);
     }
 
     public List<DesignerResponse> findDesignerByMtAndSty(int page, int size, MeetingType meetingType, String styling) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-        List<Designer> designers = designerRepository.findDesignerByMeetingTypeAndStyling(meetingType, styling,
-                pageable).getContent();
+        List<Designer> designers = designerRepositoryImpl.findDesignerByConditions(page, size, meetingType,
+                styling);
         return designerMapper.toResponseList(designers);
     }
 

@@ -2,15 +2,15 @@ package blaybus.hair_mvp.domain.designer.repository;
 
 import static blaybus.hair_mvp.domain.designer.entity.QDesigner.designer;
 
-import blaybus.hair_mvp.domain.designer.dto.DesignerResponse;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -62,5 +62,52 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
                 .offset((long) page * size)
                 .limit(size)
                 .fetch();
+    }
+
+    @Override
+    public List<Designer> findDesignerByConditions(int page, int size, String styling) {
+        BooleanBuilder stylingCondition = buildStylingCondition(styling);
+        return queryFactory
+                .selectFrom(designer)
+                .orderBy(
+                        new CaseBuilder()
+                                .when(stylingCondition).then(1)
+                                .otherwise(2)
+                                .asc(),
+                        designer.rating.desc()
+                )
+                .offset((long) page * size)
+                .limit(size)
+                .fetch();
+    }
+
+    @Override
+    public List<Designer> findDesignerByConditions(int page, int size, MeetingType meetingType, String styling) {
+        BooleanBuilder stylingCondition = buildStylingCondition(styling);
+        return queryFactory
+                .selectFrom(designer)
+                .orderBy(
+                        new CaseBuilder()
+                                .when((designer.meetingType.eq(meetingType)
+                                        .or(designer.meetingType.eq(MeetingType.BOTH)))
+                                        .and(stylingCondition)).then(1)
+                                .when(stylingCondition).then(2)
+                                .otherwise(3)
+                                .asc(),
+                        designer.rating.desc()
+                )
+                .offset((long) page * size)
+                .limit(size)
+                .fetch();
+    }
+
+    @NotNull
+    private static BooleanBuilder buildStylingCondition(String styling) {
+        String[] stylings = styling.split(",");
+        BooleanBuilder stylingCondition = new BooleanBuilder();
+        for (String s : stylings) {
+            stylingCondition.or(designer.styling.contains(s));
+        }
+        return stylingCondition;
     }
 }
