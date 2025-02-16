@@ -50,9 +50,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation "org.projectlombok:lombok-mapstruct-binding:0.2.0"
-	tasks.withType(JavaCompile).configureEach {
-		options.compilerArgs << "-Amapstruct.verbose=true"
-	}
+//	tasks.withType(JavaCompile).configureEach {
+//		options.compilerArgs << "-Amapstruct.verbose=true"
+//	}
 
 	ext {
 		JJWT_VERSION = "0.12.5"
