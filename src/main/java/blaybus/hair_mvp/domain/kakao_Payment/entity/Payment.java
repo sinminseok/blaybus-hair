@@ -19,9 +19,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tid;
-    private String aid;
-    private String cid;
+    private String tid; // 결제 고유번호
+    private String aid; // 요청 고유번호
+    private String cid; // 가맹점 코드
     private String orderId;
     private String userId;
     private String item_name;
@@ -52,7 +52,7 @@ public class Payment {
     // 결제 취소 메서드
     public void cancelPayment(KakaoCancelResponse kakaoCancelResponse) {
         if (this.canceled_amount == null) {
-            this.canceled_amount = new CanceledAmount(); // ✅ Null 방지
+            this.canceled_amount = new CanceledAmount(); //  Null 방지
         }
         this.canceled_amount.setTotal(this.amount.getTotal()); // 일단 결제금액과 취소금액 같게함
         this.canceled_at = LocalDateTime.parse(

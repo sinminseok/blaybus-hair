@@ -32,27 +32,34 @@ import java.util.Optional;
 public class KakaoPayService {
 
     private static final String KAKAO_PAY_API_HOST = "https://open-api.kakaopay.com";
+    private static final String KAKAO_TRANSACTION_API_LINK = "https://link.kakaopay.com/_/PofpGNf";
 
     private final KakaoPayProperties kakaoPayProperties;
     private final PaymentRepository paymentRepository;
     private final KakaoPaymentMapper kakaoPaymentMapper;
 
     RestTemplate restTemplate = new RestTemplate();
-//    public KakaoReadyResponse kakaoPayReady(PaymentRequest request) {
-//
-//        // 1️⃣ 기존 결제 건 확인 (READY 상태인 결제건이 있으면 중복 요청)
-//        Optional<Payment> existingPayment = paymentRepository.findByOrderIdAndStatus(request.getOrderId(), Status.READY);
-//        if (existingPayment.isPresent()) {
-//            cancelPayment();  // 2️⃣ 기존 결제 취소
-//            paymentRepository.delete(existingPayment.get());  // 3️⃣ DB에서 결제 정보 삭제
-//        }
-//
-//        // 4️⃣ 새로운 결제 요청 수행
-//        return sendKakaoPayRequest(request);
+
+    public KakaoReadyResponse kakaoPayReadyDuplicate(PaymentRequest request) {
+
+        Optional<Payment> existingPayment = paymentRepository.findByOrderIdAndStatus(request.getOrderId(), Status.READY);
+        if (existingPayment.isPresent()) {
+
+            paymentRepository.delete(existingPayment.get());  //
+        }
+
+        // 새로운 결제 요청 수행
+        return sendKakaoPayRequest(request);
+    }
+//    public void cancelReadyPayment(){
+//        paymentRepository.delete();
 //    }
 
     // 결제 요청
     public KakaoReadyResponse sendKakaoPayRequest(PaymentRequest request) {
+
+        // 결제 요청 전에 중복 확인
+//        kakaoPayReady(request);
 
         // 요청 헤더
         HttpHeaders headers = new HttpHeaders();
@@ -92,12 +99,13 @@ public class KakaoPayService {
                     .build();
 
             paymentRepository.save(payment);
+            System.out.println("결제 승인 정보 : " + kakaoReadyResponse);
 
             return kakaoReadyResponse;
         }
         catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("카카오페이 결제 준비 요청 중 오류 발생: " + e.getMessage());
+            throw new RuntimeException("카카오페이 결제 준비 요청 중 오류 발생 : " + e.getMessage());
         }
     }
     // 결제 승인
@@ -111,7 +119,7 @@ public class KakaoPayService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-        Payment payment = OptionalUtil.getOrElseThrow(paymentRepository.findByTid(tid),"존재하지 않은 결제건입니다");
+        Payment payment = OptionalUtil.getOrElseThrow(paymentRepository.findByTid(tid),"해당 주문의 결제 내역이 존재하지 않습니다.");
         log.info("payment {}", payment);
 
         Map<String, String> params = new HashMap<>();
@@ -140,7 +148,7 @@ public class KakaoPayService {
 
     // 결제 조회(단건 조회)
     public OrderResponse findByTidAndCid(String tid,String cid){
-        Payment payment = OptionalUtil.getOrElseThrow(paymentRepository.findByTidAndCid(tid,cid),"존재하지 않는 결제 번호입니다.");
+        Payment payment = OptionalUtil.getOrElseThrow(paymentRepository.findByTidAndCid(tid,cid),"해당 주문의 결제 내역이 존재하지 않습니다.");
         return kakaoPaymentMapper.toDto(payment);
     }
 
@@ -173,4 +181,40 @@ public class KakaoPayService {
         return response;
     }
     // 이미 결제 취소한 건에 대해서 다시 취소하지 못하도록 예외발생
+
+
+    // 수정 중
+    public KakaoDepositResponse depositPayment(String orderId){
+        Payment payment = OptionalUtil.getOrElseThrow(paymentRepository.findByOrderId(orderId),"해당 주문의 결제 내역이 존재하지 않습니다.");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization","SECRET_KEY " + kakaoPayProperties.getSecretKey());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String,String> params = new HashMap<>();
+        params.put("partner_user_id", payment.getUserId());
+        params.put("partner_order_id", orderId);
+        params.put("amount", String.valueOf(payment.getAmount().getTotal()));
+
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(params, headers);
+        KakaoDepositResponse response = restTemplate.postForObject(
+                KAKAO_TRANSACTION_API_LINK + "/connect/api/v1/money-transaction",requestEntity,KakaoDepositResponse.class
+        );
+
+        Payment depositPayment = Payment.builder()
+                .tid(payment.getTid())
+                .aid(payment.getAid())
+                .cid(payment.getCid())
+                .orderId(orderId)
+                .userId(payment.getUserId())
+                .item_name(payment.getItem_name())
+                .status(Status.DEPOSIT_WAITING)
+                .amount(payment.getAmount())
+                .build();
+
+        paymentRepository.save(depositPayment);
+
+        return response;
+
+    }
+
 }

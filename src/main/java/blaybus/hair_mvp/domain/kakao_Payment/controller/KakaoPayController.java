@@ -37,7 +37,7 @@ public class KakaoPayController {
     public ResponseEntity<?> successPayment( @RequestParam("pg_token") String pgToken,@RequestParam("orderId") String orderId){
 
         Payment payment = paymentRepository.findByOrderId(orderId)
-                .orElseThrow(() ->  new RuntimeException("존재하지 않은 주문아이디"));
+                .orElseThrow(() ->  new RuntimeException("존재하지 않은 결제 정보입니다"));
         String tid = payment.getTid();
 
         KakaoApproveResponse kakaoApproveResponse = kakaoPayService.kakaoPayApprove(tid, pgToken);
@@ -48,6 +48,18 @@ public class KakaoPayController {
         // 추후에 리다이렉트 경로 추가
     }
 
+    // 결제내역 조회
+    // 결제 조회 권한 필요
+    @GetMapping("/order")
+    public ResponseEntity<?> getPayment(@RequestParam("tid") String tid,@RequestParam("cid") String cid ){
+        OrderResponse orderResponse = kakaoPayService.findByTidAndCid(tid,cid);
+        SuccessResponse response = new SuccessResponse(true,"결제 내역을 조회합니다",orderResponse);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 중복 결제 요청 취소
+
+    // 결제 승인 후 결제 취소
     @PostMapping("/cancel")
     public ResponseEntity<?> cancelPayment(@RequestParam("orderId") String orderId){
         Payment approvedPayment = paymentRepository.findByOrderId(orderId)
@@ -64,12 +76,6 @@ public class KakaoPayController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 주문내역 조회
-    @GetMapping("/order")
-    public ResponseEntity<?> getPayment(@RequestParam("tid") String tid,@RequestParam("cid") String cid ){
-        OrderResponse orderResponse = kakaoPayService.findByTidAndCid(tid,cid);
-        SuccessResponse response = new SuccessResponse(true,"결제 내역을 조회합니다",orderResponse);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+
 
 }

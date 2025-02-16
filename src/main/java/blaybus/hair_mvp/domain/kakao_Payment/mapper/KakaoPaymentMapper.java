@@ -15,12 +15,13 @@ public interface KakaoPaymentMapper {
 
     KakaoPaymentMapper INSTANCE = Mappers.getMapper(KakaoPaymentMapper.class);
 
-    // 결제 승인 응답
-//    @Mapping(target = "status", constant = "SUCCESS_PAYMENT")  // ✅ 승인되었으므로 상태 변경
-//    @Mapping(target = "aid", source = "aid")
-//    @Mapping(target = "approved_at", source = "approved_at", qualifiedByName = "stringToLocalDateTime") // ✅ 수정
+     //결제 승인 응답
+//    @Mapping(target = "status", constant = "SUCCESS_PAYMENT")
+//    @Mapping(target = "approved_at", source = "approved_at", qualifiedByName = "stringToLocalDateTime") //  수정
 //    @Mapping(target = "userId",source = "partner_user_id")
 //    @Mapping(target = "orderId",source = "partner_order_id")
+//    @Mapping(target = "canceled_at",ignore = true)
+//    @Mapping(target = "created_at",source = "created_at",qualifiedByName = "stringToLocalDateTime")
 //    void toApproveEntity(KakaoApproveResponse approveResponse,@MappingTarget Payment payment);
 
 
@@ -28,7 +29,6 @@ public interface KakaoPaymentMapper {
 //    @Mapping(target = "canceled_amount", source = "canceled_amount")
 //    @Mapping(target = "canceled_at", source = "canceled_at", qualifiedByName = "stringToLocalDateTime")
 //    void updatePaymentFromDto(KakaoCancelResponse cancelResponse, @MappingTarget Payment payment);
-
 
 
     @Mapping(target = "approved_at", expression = "java(payment.getApproved_at().toString())")
