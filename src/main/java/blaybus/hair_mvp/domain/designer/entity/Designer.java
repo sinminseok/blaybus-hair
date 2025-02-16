@@ -37,7 +37,7 @@ public class Designer {
     @Column(name = "shop_address", nullable = false)
     private String shopAddress;
 
-    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DesignerRegion> regions;
 
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
