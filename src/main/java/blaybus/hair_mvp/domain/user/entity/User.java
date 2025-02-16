@@ -2,6 +2,7 @@ package blaybus.hair_mvp.domain.user.entity;
 
 import blaybus.hair_mvp.domain.common.BaseTimeEntity;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
+import blaybus.hair_mvp.domain.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -42,8 +43,16 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);
         reservation.setUser(this);
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.setUser(this);
     }
 }

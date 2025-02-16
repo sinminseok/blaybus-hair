@@ -1,6 +1,7 @@
 package blaybus.hair_mvp.domain.designer.entity;
 
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
+import blaybus.hair_mvp.domain.review.entity.Review;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,6 +43,9 @@ public class Designer {
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
+    @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
     @Column(name = "category", nullable = false)
     private String category;
 
@@ -75,5 +79,10 @@ public class Designer {
     public void addReservation(Reservation reservation) {
         this.reservations.add(reservation);
         reservation.setDesigner(this);
+    }
+
+    public void addReview(Review review){
+        this.reviews.add(review);
+        review.setDesigner(this);
     }
 }

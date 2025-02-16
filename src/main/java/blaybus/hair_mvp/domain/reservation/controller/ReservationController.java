@@ -1,20 +1,22 @@
 package blaybus.hair_mvp.domain.reservation.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
+import blaybus.hair_mvp.domain.designer.entity.Designer;
+import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
+import blaybus.hair_mvp.domain.reservation.entity.Reservation;
+import blaybus.hair_mvp.domain.reservation.repository.ReservationRepository;
 import blaybus.hair_mvp.domain.reservation.service.ReservationService;
 import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
