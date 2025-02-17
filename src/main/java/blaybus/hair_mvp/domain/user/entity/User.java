@@ -2,8 +2,7 @@ package blaybus.hair_mvp.domain.user.entity;
 
 import blaybus.hair_mvp.aws.s3.entity.S3File;
 import blaybus.hair_mvp.domain.common.BaseTimeEntity;
-import blaybus.hair_mvp.domain.designer.dto.UserPreferencesRequest;
-import blaybus.hair_mvp.domain.designer.entity.MeetingType;
+import blaybus.hair_mvp.domain.designer.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.review.entity.Review;
 import jakarta.persistence.*;
@@ -82,7 +81,7 @@ public class User extends BaseTimeEntity {
         this.file = file;
         this.profileImage = file.getFileURL();
     }
-    public void updatePreference(UserPreferencesRequest request, String styling) {
+    public void updateSurvey(UserSurveyRequest request, String styling) {
         this.faceShape = request.getFaceShape();
         this.hairCondition = request.getHairCondition();
         this.personalColor = request.getPersonalColor();

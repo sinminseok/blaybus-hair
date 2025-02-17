@@ -45,6 +45,8 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+
     @PutMapping("/profileImage")
     public ResponseEntity<?> updateProfileImage(@RequestParam("profileImage") MultipartFile profileImage) {
         String emailInToken = securityContextHelper.getEmailInToken();
