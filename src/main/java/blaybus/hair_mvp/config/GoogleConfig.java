@@ -40,12 +40,12 @@ public class GoogleConfig {
         InputStream credentialsStream = new ClassPathResource("google-calendar-credentials.json").getInputStream();
         GoogleCredentials credentials = GoogleCredentials.fromStream(credentialsStream)
                 .createScoped(Collections.singleton(CalendarScopes.CALENDAR));
-
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-
         return new Calendar.Builder(GoogleNetHttpTransport.newTrustedTransport(),
                 JSON_FACTORY, requestInitializer)
                 .setApplicationName(applicationName)
                 .build();
     }
+
+
 }

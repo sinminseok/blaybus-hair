@@ -57,7 +57,6 @@ public class UserController {
         }
         UUID uuid = UUID.randomUUID();
         String imageUrl = s3Service.uploadImage(PROFILE_IMAGE_PATH, uuid, profileImage);
-
         S3File s3file = S3File.builder()
                 .filePath(PROFILE_IMAGE_PATH)
                 .fileUUID(uuid)

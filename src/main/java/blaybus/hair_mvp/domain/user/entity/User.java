@@ -56,11 +56,10 @@ public class User extends BaseTimeEntity {
         reservation.setUser(this);
     }
 
-
     public void addReview(Review review) {
         this.reviews.add(review);
         review.setUser(this);
-
+    }
     public void updateProfileImage(S3File file) {
         this.file = file;
         this.profileImage = file.getFileURL();

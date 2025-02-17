@@ -20,10 +20,15 @@ public class Payment {
     private Long id;
 
     private String tid; // 결제 고유번호
+
     private String aid; // 요청 고유번호
+
     private String cid; // 가맹점 코드
+
     private String orderId;
+
     private String userId;
+
     private String item_name;
 
     @Setter

@@ -1,6 +1,7 @@
 package blaybus.hair_mvp.domain.reservation.mapper;
 
 import blaybus.hair_mvp.domain.designer.entity.Designer;
+import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
@@ -24,5 +25,5 @@ public interface ReservationMapper {
     @Mapping(target = "meetingType", source = "reservation.meetingType")
     @Mapping(target = "designerName", source = "designer.name")
     @Mapping(target = "shopAddress", source = "designer.shopAddress")
-    ReservationResponse toResponse(Reservation reservation, Designer designer);
+    ReservationCreateResponse toCreateResponse(Reservation reservation, Designer designer);
 }

@@ -1,7 +1,5 @@
 package blaybus.hair_mvp.auth.service;
 
-import java.time.Duration;
-
 import blaybus.hair_mvp.constants.JwtMetadata;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -13,17 +11,17 @@ public class CookieService {
     @Value("${jwt.access-key-expiration-s}")
     private long accessKeyExpirationInS;
 
-//    @Value("${server.servlet.context-path}")
-//    private String contextPath;
+    @Value("${jwt.refresh-key-expiration-s}")
+    private long refreshKeyExpirationInS;
 
-    public ResponseCookie createAccessTokenCookie(String accessToken, Duration maxAge) {
 
-        return ResponseCookie.from(JwtMetadata.ACCESS_TOKEN, accessToken)
+    public ResponseCookie createRefreshTokenCookie(String refreshToken) {
+        return ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(maxAge)
-//                .path(contextPath)
-                .sameSite("None")
+                .maxAge(refreshKeyExpirationInS)
+                .sameSite("Strict")
+                .path("/")
                 .build();
     }
 
@@ -32,7 +30,7 @@ public class CookieService {
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(accessKeyExpirationInS)
-//                .path(contextPath)
+                .path("/")
                 .sameSite("Strict")
                 .build();
     }

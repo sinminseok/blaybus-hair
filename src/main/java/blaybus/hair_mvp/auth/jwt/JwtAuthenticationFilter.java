@@ -73,8 +73,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new AuthExceptionCode(ErrorResponseCode.FAIL_LOGIN, "refreshToken 인증 실패");
         }
         LoginResponse loginResponse = loginService.login(byToken.get().getUser().getEmail());
-        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().getValue());
-        response.addHeader(HttpHeaders.AUTHORIZATION, loginResponse.getRefreshToken());
+//        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().getValue());
+//        response.addHeader(HttpHeaders.AUTHORIZATION, loginResponse.getRefreshToken());
         SuccessResponse apiResponse = new SuccessResponse(false,  "JWT Reissue", null);
         String responseBody = objectMapper.writeValueAsString(apiResponse);
         response.setStatus(HttpServletResponse.SC_OK);

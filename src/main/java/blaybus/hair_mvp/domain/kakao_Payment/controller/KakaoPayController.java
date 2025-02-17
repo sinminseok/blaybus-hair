@@ -35,11 +35,9 @@ public class KakaoPayController {
 
     @GetMapping("/approve")
     public ResponseEntity<?> successPayment( @RequestParam("pg_token") String pgToken,@RequestParam("orderId") String orderId){
-
         Payment payment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() ->  new RuntimeException("존재하지 않은 결제 정보입니다"));
         String tid = payment.getTid();
-
         KakaoApproveResponse kakaoApproveResponse = kakaoPayService.kakaoPayApprove(tid, pgToken);
         System.out.println("pgToken : "+ pgToken);
 
@@ -75,7 +73,4 @@ public class KakaoPayController {
         SuccessResponse response = new SuccessResponse(true,"결제를 실패했습니다",null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-
 }

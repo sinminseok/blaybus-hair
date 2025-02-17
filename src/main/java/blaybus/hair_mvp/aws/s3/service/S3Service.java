@@ -28,7 +28,6 @@ public class S3Service {
 
     private String uploadFile(String filePath, UUID uuid, MultipartFile file, ObjectMetadata metadata) {
         String fileName = filePath + uuid + "_" + file.getOriginalFilename();
-
         try {
             amazonS3.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));

@@ -4,10 +4,8 @@ import blaybus.hair_mvp.domain.kakao_Payment.dto.*;
 
 import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
 import blaybus.hair_mvp.domain.kakao_Payment.entity.KakaoPayProperties;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
 import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import blaybus.hair_mvp.domain.kakao_Payment.mapper.KakaoPaymentMapper;
-import blaybus.hair_mvp.domain.kakao_Payment.repository.PaymentRepository;
 import blaybus.hair_mvp.domain.kakao_Payment.repository.PaymentRepository;
 import blaybus.hair_mvp.utils.OptionalUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;

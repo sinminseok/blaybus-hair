@@ -36,18 +36,22 @@ public class LoginService {
     private long refreshKeyExpirationInMs;
 
     @Transactional
-    public LoginResponse login(String email){
+    public LoginResponse login(String email) {
         User user = getValidatedUser(email);
         String refreshToken = jwtService.createRefreshToken(new RefreshTokenPayload(user.getEmail(), new Date()));
         updateRefreshToken(user, refreshToken);
+
         AccessTokenPayload accessTokenPayload = new AccessTokenPayload(user.getEmail(), user.getRole(), new Date());
         String accessToken = jwtService.createAccessToken(accessTokenPayload);
-        ResponseCookie accessTokenCookie = cookieService.createAccessTokenCookie(accessToken, Duration.ofMillis(accessKeyExpirationInMs));
-        return new LoginResponse(user.getRole(), accessTokenCookie, refreshToken);
+
+        ResponseCookie accessTokenCookie = cookieService.createAccessTokenCookie(accessToken);
+        ResponseCookie refreshTokenCookie = cookieService.createRefreshTokenCookie(refreshToken);
+
+        return new LoginResponse(user.getRole(), accessTokenCookie, refreshTokenCookie);
     }
 
+
     private RefreshToken updateRefreshToken(User user, String token){
-        System.out.println("tokentoken = " + token);
         refreshTokenRepository.findByUser(user).ifPresent(refreshTokenRepository::delete);
         return refreshTokenRepository.save(RefreshToken.builder()
                 .user(user)

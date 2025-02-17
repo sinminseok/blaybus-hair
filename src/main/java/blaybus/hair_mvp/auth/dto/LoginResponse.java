@@ -2,6 +2,7 @@ package blaybus.hair_mvp.auth.dto;
 
 
 import blaybus.hair_mvp.domain.user.entity.Role;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseCookie;
 
 
@@ -10,17 +11,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(force = true)
+@AllArgsConstructor
 public class LoginResponse {
-    private Role role;
-    private String refreshToken;
-    private ResponseCookie accessTokenCookie;
+    private final Role role;
+    private final ResponseCookie accessTokenCookie;
+    private final ResponseCookie refreshTokenCookie;
 
-    @Builder
-    public LoginResponse(Role role, ResponseCookie responseCookie, String refreshToken) {
-        this.role = role;
-        this.refreshToken = refreshToken;
-        this.accessTokenCookie = responseCookie;
-    }
 
 }

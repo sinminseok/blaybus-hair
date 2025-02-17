@@ -1,6 +1,7 @@
 package blaybus.hair_mvp.domain.reservation.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
+import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
 import blaybus.hair_mvp.domain.reservation.service.ReservationService;
@@ -33,7 +34,7 @@ public class ReservationController {
      */
     @PostMapping
     public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request){
-        ReservationResponse reservationResponse = reservationService.save(request, securityContextHelper.getEmailInToken());
+        ReservationCreateResponse reservationResponse = reservationService.save(request, securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "예약 성공", reservationResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
