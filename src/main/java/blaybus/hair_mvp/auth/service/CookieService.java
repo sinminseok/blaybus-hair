@@ -14,10 +14,11 @@ public class CookieService {
     @Value("${jwt.refresh-key-expiration-s}")
     private long refreshKeyExpirationInS;
 
+
     public ResponseCookie createRefreshTokenCookie(String refreshToken) {
         return ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .maxAge(refreshKeyExpirationInS)
                 .sameSite("Strict")
                 .path("/")
@@ -27,7 +28,7 @@ public class CookieService {
     public ResponseCookie createAccessTokenCookie(String accessToken) {
         return ResponseCookie.from(JwtMetadata.ACCESS_TOKEN, accessToken)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .maxAge(accessKeyExpirationInS)
                 .path("/")
                 .sameSite("Strict")
