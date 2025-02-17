@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  hair-mvp:
-    image: minseok2000/hair-mvp
+  hair_mvp:
+    image: minseok2000/hair_mvp:latest
     container_name: hair_mvp
     expose:
       - "8080"
