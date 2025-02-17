@@ -14,7 +14,6 @@ public class CookieService {
     @Value("${jwt.refresh-key-expiration-s}")
     private long refreshKeyExpirationInS;
 
-
     public ResponseCookie createRefreshTokenCookie(String refreshToken) {
         return ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
