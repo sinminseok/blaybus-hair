@@ -1,15 +1,12 @@
 package blaybus.hair_mvp.domain.user.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
-import blaybus.hair_mvp.auth.service.CookieService;
-import blaybus.hair_mvp.auth.service.LoginService;
-import blaybus.hair_mvp.aws.s3.S3FileRepository;
 import blaybus.hair_mvp.aws.s3.entity.S3File;
 import blaybus.hair_mvp.aws.s3.service.S3FileService;
 import blaybus.hair_mvp.aws.s3.service.S3Service;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyResponse;
 import blaybus.hair_mvp.domain.user.entity.User;
-import blaybus.hair_mvp.domain.user.service.OAuthService;
 import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.UUID;
@@ -45,7 +42,13 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @GetMapping("/getUserSurvey")
+    public ResponseEntity<?> getUserSurvey() {
+        String email = securityContextHelper.getEmailInToken();
+        UserSurveyResponse userSurvey = userService.getUserSurvey(email);
+        SuccessResponse<UserSurveyResponse> response = new SuccessResponse<>(true, "최근 자가진단 기록 조회 성공", userSurvey);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PutMapping("/profileImage")
     public ResponseEntity<?> updateProfileImage(@RequestParam("profileImage") MultipartFile profileImage) {

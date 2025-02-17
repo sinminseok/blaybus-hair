@@ -1,7 +1,8 @@
 package blaybus.hair_mvp.domain.user.service;
 
-import blaybus.hair_mvp.domain.designer.dto.UserSurveyRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyResponse;
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.mapper.UserMapper;
 import blaybus.hair_mvp.domain.user.repository.UserRepository;
@@ -36,6 +37,18 @@ public class UserService {
     public Optional<User> findByEmail(final String email){
         return userRepository.findByEmail(email);
     }
+
+    public UserSurveyResponse getUserSurvey(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        return UserSurveyResponse.builder()
+                .faceShape(user.getFaceShape())
+                .styling(user.getStyling())
+                .personalColor(user.getPersonalColor())
+                .hairCondition(user.getHairCondition())
+                .build();
+    }
+
 
     @Transactional
     public void updateUserSurvey(String email, UserSurveyRequest request, String styling) {

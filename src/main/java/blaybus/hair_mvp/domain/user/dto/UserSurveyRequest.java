@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.domain.designer.dto;
+package blaybus.hair_mvp.domain.user.dto;
 
 import lombok.Getter;
 

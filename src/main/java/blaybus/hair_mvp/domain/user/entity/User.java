@@ -2,7 +2,7 @@ package blaybus.hair_mvp.domain.user.entity;
 
 import blaybus.hair_mvp.aws.s3.entity.S3File;
 import blaybus.hair_mvp.domain.common.BaseTimeEntity;
-import blaybus.hair_mvp.domain.designer.dto.UserSurveyRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.review.entity.Review;
 import jakarta.persistence.*;

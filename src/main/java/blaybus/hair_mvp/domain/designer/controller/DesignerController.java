@@ -2,10 +2,12 @@ package blaybus.hair_mvp.domain.designer.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
 import blaybus.hair_mvp.domain.designer.dto.DesignerResponse;
-import blaybus.hair_mvp.domain.designer.dto.UserSurveyRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.service.DesignerService;
+import blaybus.hair_mvp.domain.user.entity.User;
+import blaybus.hair_mvp.domain.user.repository.UserRepository;
 import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.List;
@@ -27,6 +29,7 @@ public class DesignerController {
     private final DesignerService designerService;
     private final UserService userService;
     private final SecurityContextHelper securityContextHelper;
+    private final UserRepository userRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllDesigner(
