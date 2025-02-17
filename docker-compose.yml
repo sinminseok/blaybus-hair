@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  fl-api:
+  hair-mvp:
     image: minseok2000/hair-mvp
     container_name: hair_mvp
     expose:
@@ -10,5 +10,3 @@ services:
       - "8080:8080"
     env_file:
       - /home/ubuntu/.env
-    networks:
-      - app-network
