@@ -38,11 +38,4 @@ public class ReservationController {
         SuccessResponse response = new SuccessResponse(true, "예약 성공", reservationResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserReservations(@PathVariable UUID userId){
-        List<ReservationResponse> reservations = reservationService.findReservationsByUserId(userId);
-        SuccessResponse<List<ReservationResponse>> response = new SuccessResponse<>(true, "회원 예약 조회 성공", reservations);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 }

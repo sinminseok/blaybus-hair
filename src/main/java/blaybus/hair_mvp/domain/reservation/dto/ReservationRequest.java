@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class ReservationRequest {
     private String designerId;
     private Integer price;
+
     private MeetingType meetingType;
     private LocalDateTime reservationAt;
 }

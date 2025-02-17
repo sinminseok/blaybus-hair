@@ -54,10 +54,6 @@ public class KakaoPayService {
 
     // 결제 요청
     public KakaoReadyResponse sendKakaoPayRequest(PaymentRequest request) {
-
-        // 결제 요청 전에 중복 확인
-//        kakaoPayReady(request);
-
         // 요청 헤더
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "SECRET_KEY " + kakaoPayProperties.getSecretKey());
@@ -105,6 +101,7 @@ public class KakaoPayService {
             throw new RuntimeException("카카오페이 결제 준비 요청 중 오류 발생 : " + e.getMessage());
         }
     }
+
     // 결제 승인
     public KakaoApproveResponse kakaoPayApprove(String tid,String pgToken){
         //tid 를 받아야할듯

@@ -42,7 +42,9 @@ public class Payment {
     private CanceledAmount canceled_amount;
 
     private LocalDateTime created_at;
+
     private LocalDateTime approved_at;
+
     private LocalDateTime canceled_at;
 
     // 결제 승인 메서드

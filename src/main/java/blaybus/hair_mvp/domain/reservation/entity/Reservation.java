@@ -2,6 +2,7 @@ package blaybus.hair_mvp.domain.reservation.entity;
 
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import blaybus.hair_mvp.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,10 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    private Status paymentStatus;
 
     @Setter
     @Column(name = "google_meet_link", nullable = true)
