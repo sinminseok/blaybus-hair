@@ -32,7 +32,6 @@ public class AuthController {
     @PostMapping("/login/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody final GoogleAuthRequest request) throws GeneralSecurityException, IOException {
         UserSignupRequest userSignupRequest = oAuthService.getGoogleProfile(request);
-
         if (userService.isExistUser(userSignupRequest.getEmail())) {
             return createLoginResponse(userSignupRequest.getEmail(), "구글 로그인 성공");
         }
