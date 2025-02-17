@@ -43,29 +43,26 @@ public class Designer {
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    @Column(name = "category", nullable = true)
-    private String category;
-
     @Column(name = "region", nullable = false)
     private String region;
 
     @Column(name = "styling", nullable = false)
-    private String styling;
+    private String styling; // 펌,컷
 
     @Column(name = "f2f_consult_fee", nullable = false)
-    private int offlineConsultFee;
+    private int offlineConsultFee; //비대면 가격
 
     @Column(name = "online_consult_fee", nullable = false)
-    private int onlineConsultFee;
+    private int onlineConsultFee; // 대면 가걱
 
     @Enumerated(EnumType.STRING)
     private MeetingType meetingType;
 
     @Column(name = "bio", length = 30)
-    private String bio;
+    private String bio; // 한줄소개
 
     @Column(name = "rating")
-    private float rating;
+    private float rating; // 별점
 
 
     @Builder
