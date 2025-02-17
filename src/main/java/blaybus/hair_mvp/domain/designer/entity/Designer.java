@@ -43,9 +43,6 @@ public class Designer {
     @OneToMany(mappedBy = "designer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    @Column(name = "category", nullable = false)
-    private String category;
-
     @Column(name = "region", nullable = false)
     private String region;
 

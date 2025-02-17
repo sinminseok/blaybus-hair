@@ -1,10 +1,14 @@
 package blaybus.hair_mvp.domain.designer.controller;
 
+import blaybus.hair_mvp.auth.SecurityContextHelper;
 import blaybus.hair_mvp.domain.designer.dto.DesignerResponse;
+import blaybus.hair_mvp.domain.designer.dto.UserPreferencesRequest;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
-import blaybus.hair_mvp.domain.designer.repository.DesignerRepositoryImpl;
 import blaybus.hair_mvp.domain.designer.service.DesignerService;
+import blaybus.hair_mvp.domain.user.entity.User;
+import blaybus.hair_mvp.domain.user.repository.UserRepository;
+import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DesignerController {
 
     private final DesignerService designerService;
+    private final UserService userService;
+    private final SecurityContextHelper securityContextHelper;
+    private final UserRepository userRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllDesigner(
@@ -41,8 +49,12 @@ public class DesignerController {
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam MeetingType meetingType,
-            @RequestParam String styling
+            @RequestParam String styling,
+            @RequestBody UserPreferencesRequest userPreferencesRequest
             ){
+        // 유저 선호 정보 업데이트
+        String email = securityContextHelper.getEmailInToken();
+        userService.updateUserPreference(email, userPreferencesRequest, styling);
         // 대면, 비대면 둘 다 선택한 경우 카테고리에 맞는 디자이너 조회
         if (meetingType == MeetingType.BOTH) {
             List<DesignerResponse> designers = designerService.findDesignerBySty(page, size, styling);
