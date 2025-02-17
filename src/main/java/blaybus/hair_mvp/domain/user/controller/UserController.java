@@ -7,6 +7,7 @@ import blaybus.hair_mvp.aws.s3.S3FileRepository;
 import blaybus.hair_mvp.aws.s3.entity.S3File;
 import blaybus.hair_mvp.aws.s3.service.S3FileService;
 import blaybus.hair_mvp.aws.s3.service.S3Service;
+import blaybus.hair_mvp.domain.user.dto.MyPageResponse;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.service.OAuthService;
@@ -45,29 +46,13 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/profileImage")
-    public ResponseEntity<?> updateProfileImage(@RequestParam("profileImage") MultipartFile profileImage) {
+    @GetMapping("/my_page")
+    public ResponseEntity<?> findByPage(){
         String emailInToken = securityContextHelper.getEmailInToken();
-        User user = userService.findByEmail(emailInToken)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
-        // 기존 프로필 사진이 존재하면 삭제
-        if (user.getProfileImage() != null) {
-            s3Service.deleteFile(user.getFile().getFileName());
-            s3FileService.delete(user.getFile());
-        }
-        UUID uuid = UUID.randomUUID();
-        String imageUrl = s3Service.uploadImage(PROFILE_IMAGE_PATH, uuid, profileImage);
-        S3File s3file = S3File.builder()
-                .filePath(PROFILE_IMAGE_PATH)
-                .fileUUID(uuid)
-                .fileName(profileImage.getOriginalFilename())
-                .fileURL(imageUrl)
-                .build();
-        s3FileService.save(s3file);
-        user.updateProfileImage(s3file);
-
-        SuccessResponse<String> response = new SuccessResponse<>(true, "프로필 이미지 등록 성공", null);
+        MyPageResponse myPageInformation = userService.findMyPageInformation(emailInToken);
+        SuccessResponse response = new SuccessResponse(true, "마이페이지 조회 성공", myPageInformation);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
 }

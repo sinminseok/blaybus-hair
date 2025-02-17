@@ -72,7 +72,7 @@ public class ReservationService {
     }
 
     public List<ReservationResponse> findReservationsByUserId(UUID userId) {
-        List<Reservation> reservations = reservationRepository.findByUser_Id(userId);
+        List<Reservation> reservations = reservationRepository.findByUserId(userId);
         // status
         return reservations.stream().map(
                 reservation -> ReservationResponse.builder()

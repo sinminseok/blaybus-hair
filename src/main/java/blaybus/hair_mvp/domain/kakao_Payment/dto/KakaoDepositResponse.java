@@ -13,6 +13,4 @@ import org.checkerframework.checker.units.qual.A;
 public class KakaoDepositResponse {
     private String link;
     private String created_at;
-
-
 }
