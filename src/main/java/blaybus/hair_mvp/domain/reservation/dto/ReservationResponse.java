@@ -24,4 +24,3 @@ public class ReservationResponse {
    private Status status;
    private String googleMeetLink;
 }
-
