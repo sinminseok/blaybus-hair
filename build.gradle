@@ -14,10 +14,6 @@ java {
 	}
 }
 
-//bootJar {
-//	enabled = ㄹ // Spring Boot의 JAR 패키징을 활성화
-//}
-
 jar {
 	enabled = false
 }
