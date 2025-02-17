@@ -6,7 +6,6 @@ import blaybus.hair_mvp.domain.designer.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.service.DesignerService;
-import blaybus.hair_mvp.domain.user.repository.UserRepository;
 import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.List;
@@ -28,7 +27,6 @@ public class DesignerController {
     private final DesignerService designerService;
     private final UserService userService;
     private final SecurityContextHelper securityContextHelper;
-    private final UserRepository userRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllDesigner(
@@ -54,14 +52,8 @@ public class DesignerController {
         // 유저 선호 정보 업데이트
         String email = securityContextHelper.getEmailInToken();
         userService.updateUserSurvey(email, userSurveyRequest, styling);
-        // 대면, 비대면 둘 다 선택한 경우 카테고리에 맞는 디자이너 조회
-        if (meetingType == MeetingType.BOTH) {
-            List<DesignerResponse> designers = designerService.findDesignerBySty(page, size, styling);
-            SuccessResponse<List<DesignerResponse>> response = new SuccessResponse<>(true, "대면/비대면 디자이너 조회 성공", designers);
-            return ResponseEntity.ok(response);
-        }
-        // 대면, 비대면 중 하나만 선택한 경우 해당하는 디자이너 조회
-        List<DesignerResponse> designers = designerService.findDesignerByMtAndSty(page, size, meetingType, styling);
+
+        List<DesignerResponse> designers = designerService.findDesigner(page, size, meetingType, styling);
         SuccessResponse<List<DesignerResponse>> response = new SuccessResponse<>(true, meetingType + "디자이너 조회 성공", designers);
         return ResponseEntity.ok(response);
     }

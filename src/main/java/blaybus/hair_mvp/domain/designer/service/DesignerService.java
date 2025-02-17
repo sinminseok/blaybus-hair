@@ -7,12 +7,14 @@ import blaybus.hair_mvp.domain.designer.mapper.DesignerMapper;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepositoryImpl;
 import blaybus.hair_mvp.utils.OptionalUtil;
+import blaybus.hair_mvp.utils.SuccessResponse;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,12 +35,13 @@ public class DesignerService {
         return designerMapper.toResponse(designer);
     }
 
-    public List<DesignerResponse> findDesignerBySty(int page, int size, String styling) {
-        List<Designer> designers = designerRepositoryImpl.findDesignerByConditions(page, size, styling);
-        return designerMapper.toResponseList(designers);
-    }
-
-    public List<DesignerResponse> findDesignerByMtAndSty(int page, int size, MeetingType meetingType, String styling) {
+    public List<DesignerResponse> findDesigner(int page, int size, MeetingType meetingType, String styling) {
+        // 대면, 비대면 둘 다 선택한 경우 카테고리에 맞는 디자이너 조회
+        if (meetingType == MeetingType.BOTH) {
+            List<Designer> designers = designerRepositoryImpl.findDesignerByConditions(page, size, styling);
+            return designerMapper.toResponseList(designers);
+        }
+        // 대면, 비대면 중 하나만 선택한 경우 해당하는 디자이너 조회
         List<Designer> designers = designerRepositoryImpl.findDesignerByConditions(page, size, meetingType,
                 styling);
         return designerMapper.toResponseList(designers);
