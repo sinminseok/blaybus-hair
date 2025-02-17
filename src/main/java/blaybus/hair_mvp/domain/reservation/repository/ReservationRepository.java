@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
+public interface ReservationRepository extends JpaRepository<Reservation, UUID>, CustomReservationRepository {
     @EntityGraph(attributePaths = {"designer"})
     List<Reservation> findByUserId(UUID userId);
 }

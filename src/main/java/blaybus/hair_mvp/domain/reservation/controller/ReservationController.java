@@ -38,4 +38,16 @@ public class ReservationController {
         SuccessResponse response = new SuccessResponse(true, "예약 성공", reservationResponse);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * 현재 예약된 내역 조회 API
+     */
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentReservation(){
+        List<ReservationResponse> currentReservations = reservationService.findCurrentReservations(securityContextHelper.getEmailInToken());
+        SuccessResponse response = new SuccessResponse(true, "현재 예약 조회 성공", currentReservations);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
 }

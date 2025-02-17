@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CustomReviewRepositoryImpl implements CustomReviewRepository {
 
     private final JPAQueryFactory query;
-    private QReview qReview;
+    private QReview qReview = QReview.review;
 
 
     @Override
