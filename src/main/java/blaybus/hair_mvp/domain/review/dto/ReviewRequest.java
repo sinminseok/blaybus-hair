@@ -13,5 +13,4 @@ public class ReviewRequest {
     private Integer starPoint;
     private String content;
     private UUID designerId;
-    private UUID reviewId;
 }

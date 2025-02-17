@@ -40,6 +40,7 @@ public class OAuthService {
         if (googleIdToken == null) {
             throw new AuthExceptionCode(ErrorResponseCode.FAIL_GOOGLE_TOKEN, INVALID_GOOGLE_ID_TOKEN);
         }
+        System.out.println("getGoogleProfileName = " + getGoogleProfilePicture(request.getAccessToken()));
         GoogleIdToken.Payload payload = googleIdToken.getPayload();
         return UserSignupRequest.builder()
                 .email(payload.getEmail())

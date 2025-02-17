@@ -22,6 +22,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", expression = "java(blaybus.hair_mvp.domain.user.entity.Role.CLIENT)")
+    @Mapping(target = "profileImage", source = "userSignupRequest.profileUrl")
     User toEntity(UserSignupRequest userSignupRequest);
 
     @Mapping(target = "userNickName", source = "user.name")
