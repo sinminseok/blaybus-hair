@@ -27,10 +27,6 @@ public class UserController {
 
     private final UserService userService;
     private final SecurityContextHelper securityContextHelper;
-    private final S3Service s3Service;
-    private final S3FileService s3FileService;
-
-    private final String PROFILE_IMAGE_PATH = "user/profileImage/";
 
     @PostMapping
     public ResponseEntity<?> signUp(@RequestBody final UserSignupRequest request) {

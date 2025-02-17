@@ -70,19 +70,4 @@ public class ReservationService {
         String meetLink = googleMeetHelper.createGoogleMeetLink(designer.getName(), "미용실 예약 정보", googleDateTime, endDateTime);
         reservation.setGoogleMeetLink(meetLink);
     }
-
-    public List<ReservationResponse> findReservationsByUserId(UUID userId) {
-        List<Reservation> reservations = reservationRepository.findByUserId(userId);
-        // status
-        return reservations.stream().map(
-                reservation -> ReservationResponse.builder()
-                        .id(reservation.getId())
-                        .designerName(reservation.getDesigner().getName())
-                        .shopAddress(reservation.getDesigner().getShopAddress())
-                        .meetingType(reservation.getMeetingType())
-                        .price(reservation.getPrice())
-                        // status 추가 예정
-                        .build()
-        ).toList();
-    }
 }
