@@ -18,6 +18,8 @@ import blaybus.hair_mvp.utils.OptionalUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,13 +80,25 @@ public class UserService {
 
     public MyPageResponse findMyPageInformation(final String email){
         User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(email), NOT_EXIST_USER_EMAIL_MESSAGE);
-        List<ReservationResponse> reservations = reservationRepository.findByUserId(user.getId()).stream()
-                .map(reservation -> reservationMapper.toResponse(reservation, reservation.getDesigner()))
+        List<ReservationResponse> reservations = new ArrayList<>();
+        //예약 내역
+        reservationRepository.findByUserId(user.getId()).stream()
+                .forEach(reservation -> {
+                    if (reservation.getReservationAt().isBefore(LocalDateTime.now())){
+                        reservations.add(reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), false));
+                    }
+                    if (!reservation.getReservationAt().isBefore(LocalDateTime.now())){
+                        reservations.add(reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), true));
+                    }
+                });
+
+        List<ReservationResponse> cancelReservations = reservationRepository.findCancelReservationByUserId(user.getId()).stream()
+                .map(reservation -> reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), false))
                 .collect(Collectors.toList());
 
         List<ReviewResponse> reviews = reviewRepository.findAllByUserId(user.getId()).stream()
                 .map(review -> reviewMapper.toResponse(review, review.getDesigner()))
                 .collect(Collectors.toList());
-        return userMapper.toMyPageResponse(user, reservations, reviews);
+        return userMapper.toMyPageResponse(user, reservations, cancelReservations, reviews);
     }
 }

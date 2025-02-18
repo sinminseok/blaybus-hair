@@ -6,5 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CustomReservationRepository {
+    List<Reservation> findCancelReservationByUserId(final UUID userId);
+
     List<Reservation> findCurrentReservationByUserId(final UUID userId);
 }

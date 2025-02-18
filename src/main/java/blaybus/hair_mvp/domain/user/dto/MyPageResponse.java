@@ -16,5 +16,6 @@ public class MyPageResponse {
     private String userEmail;
     private String userProfileUrl;
     private List<ReservationResponse> reservations;
+    private List<ReservationResponse> cancelReservations;
     private List<ReviewResponse> reviews;
 }
