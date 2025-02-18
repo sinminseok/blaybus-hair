@@ -34,7 +34,7 @@ public interface ReservationMapper {
     @Mapping(target = "shopAddress", source = "designer.shopAddress")
     @Mapping(target = "meetingType", source = "reservation.meetingType")
     @Mapping(target = "price", source = "reservation.price")
-    @Mapping(target = "status", source = "reservation.paymentStatus")
+    @Mapping(target = "paymentStatus", source = "reservation.paymentStatus")
     @Mapping(target = "googleMeetLink", source = "reservation.googleMeetLink")
     ReservationResponse toResponse(Reservation reservation, Designer designer);
 
@@ -44,7 +44,7 @@ public interface ReservationMapper {
     @Mapping(target = "shopAddress", source = "designer.shopAddress")
     @Mapping(target = "meetingType", source = "reservation.meetingType")
     @Mapping(target = "price", source = "reservation.price")
-    @Mapping(target = "status", source = "reservation.paymentStatus")
+    @Mapping(target = "paymentStatus", source = "reservation.paymentStatus")
     @Mapping(target = "googleMeetLink", source = "reservation.googleMeetLink")
     @Mapping(target = "isCurrent", source = "isCurrent")
     ReservationResponse toResponseWithCurrentState(Reservation reservation, Designer designer, boolean isCurrent);

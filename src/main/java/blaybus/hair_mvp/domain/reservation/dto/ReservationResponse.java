@@ -2,7 +2,7 @@ package blaybus.hair_mvp.domain.reservation.dto;
 
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 
-import blaybus.hair_mvp.domain.payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class ReservationResponse {
    private String shopAddress;
    private MeetingType meetingType;
    private Integer price;
-   private Status status;
+   private PaymentStatus paymentStatus;
    private String googleMeetLink;
    @JsonProperty("isCurrent")
    private boolean isCurrent;

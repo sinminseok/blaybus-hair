@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -25,15 +26,15 @@ public class Payment {
 
     private String cid; // 가맹점 코드
 
-    private String orderId;
+    private UUID orderId;
 
-    private String userId;
+    private UUID userId;
 
     private String item_name;
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private PaymentStatus paymentStatus;
 
     @Embedded
     private Amount amount;
@@ -54,7 +55,7 @@ public class Payment {
                 kakaoApproveResponse.getApproved_at(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         );
-        this.status = Status.SUCCESS_PAYMENT;
+        this.paymentStatus = PaymentStatus.SUCCESS_PAYMENT;
     }
     // 결제 취소 메서드
     public void cancelPayment(KakaoCancelResponse kakaoCancelResponse) {
@@ -66,7 +67,7 @@ public class Payment {
                 kakaoCancelResponse.getCanceled_at(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         ); // 취소 시간 업데이트
-        this.status = Status.CANCEL_PAYMENT; // 상태 변경
+        this.paymentStatus = PaymentStatus.CANCEL_PAYMENT; // 상태 변경
     }
 
 
