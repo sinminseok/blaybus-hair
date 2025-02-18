@@ -1,7 +1,7 @@
-package blaybus.hair_mvp.domain.kakao_Payment.dto;
+package blaybus.hair_mvp.domain.payment.dto;
 
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
+import blaybus.hair_mvp.domain.payment.entity.Amount;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 

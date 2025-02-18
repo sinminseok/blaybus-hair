@@ -1,7 +1,7 @@
-package blaybus.hair_mvp.domain.kakao_Payment.entity;
+package blaybus.hair_mvp.domain.payment.entity;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoApproveResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoCancelResponse;
+import blaybus.hair_mvp.domain.payment.dto.KakaoApproveResponse;
+import blaybus.hair_mvp.domain.payment.dto.KakaoCancelResponse;
 import jakarta.persistence.*;
 import lombok.*;
 

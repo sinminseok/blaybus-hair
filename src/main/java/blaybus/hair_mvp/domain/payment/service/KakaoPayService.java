@@ -1,12 +1,12 @@
-package blaybus.hair_mvp.domain.kakao_Payment.service;
+package blaybus.hair_mvp.domain.payment.service;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.*;
+import blaybus.hair_mvp.domain.payment.dto.*;
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.KakaoPayProperties;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
-import blaybus.hair_mvp.domain.kakao_Payment.mapper.KakaoPaymentMapper;
-import blaybus.hair_mvp.domain.kakao_Payment.repository.PaymentRepository;
+import blaybus.hair_mvp.domain.payment.entity.Payment;
+import blaybus.hair_mvp.domain.payment.entity.KakaoPayProperties;
+import blaybus.hair_mvp.domain.payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.mapper.KakaoPaymentMapper;
+import blaybus.hair_mvp.domain.payment.repository.PaymentRepository;
 import blaybus.hair_mvp.utils.OptionalUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -185,6 +185,7 @@ public class KakaoPayService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String,String> params = new HashMap<>();
+
         params.put("partner_user_id", payment.getUserId());
         params.put("partner_order_id", orderId);
         params.put("amount", String.valueOf(payment.getAmount().getTotal()));

@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.domain.kakao_Payment.dto;
+package blaybus.hair_mvp.domain.payment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

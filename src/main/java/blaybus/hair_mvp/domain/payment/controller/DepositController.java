@@ -1,7 +1,7 @@
-package blaybus.hair_mvp.domain.kakao_Payment.controller;
+package blaybus.hair_mvp.domain.payment.controller;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoDepositResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.service.KakaoPayService;
+import blaybus.hair_mvp.domain.payment.dto.KakaoDepositResponse;
+import blaybus.hair_mvp.domain.payment.service.KakaoPayService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package blaybus.hair_mvp.domain.reservation.repository.impl;
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.entity.QReservation;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.reservation.repository.CustomReservationRepository;

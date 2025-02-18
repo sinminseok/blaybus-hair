@@ -1,12 +1,8 @@
-package blaybus.hair_mvp.domain.kakao_Payment.dto;
+package blaybus.hair_mvp.domain.payment.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor

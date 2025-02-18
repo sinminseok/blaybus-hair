@@ -1,14 +1,9 @@
-package blaybus.hair_mvp.domain.kakao_Payment.mapper;
+package blaybus.hair_mvp.domain.payment.mapper;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoApproveResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoCancelResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.dto.OrderResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
+import blaybus.hair_mvp.domain.payment.dto.OrderResponse;
+import blaybus.hair_mvp.domain.payment.entity.Payment;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Mapper(componentModel = "spring")
 public interface KakaoPaymentMapper {

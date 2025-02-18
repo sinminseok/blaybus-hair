@@ -3,7 +3,7 @@ package blaybus.hair_mvp.domain.reservation.service;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
@@ -50,7 +50,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationCreateResponse save(final ReservationRequest request, final String userEmail){
+    public ReservationCreateResponse save(final ReservationRequest request, final String userEmail) throws IOException {
         Reservation reservation = reservationMapper.toEntity(request);
         Designer designer = OptionalUtil.getOrElseThrow(
                 designerRepository.findById(UUID.fromString(request.getDesignerId())), NOT_EXIST_DESIGNER_ID_MESSAGE);
@@ -60,10 +60,9 @@ public class ReservationService {
         reservationRepository.save(reservation);
         designer.addReservation(reservation);
         user.addReservation(reservation);
-
         if (request.getMeetingType().equals(MeetingType.OFFLINE)) {
             //todo 회의 후 논의
-            //generateGoogleMeetLink(reservation, designer);
+            generateGoogleMeetLink(reservation, designer);
         }
         return reservationMapper.toCreateResponse(reservation, designer);
     }
