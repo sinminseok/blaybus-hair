@@ -2,6 +2,8 @@ package blaybus.hair_mvp.domain.designer.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
 import blaybus.hair_mvp.domain.designer.dto.DesignerResponse;
+import blaybus.hair_mvp.domain.designer.dto.TimeSlot;
+import blaybus.hair_mvp.domain.designer.service.ScheduleService;
 import blaybus.hair_mvp.domain.user.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
@@ -10,7 +12,9 @@ import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.repository.UserRepository;
 import blaybus.hair_mvp.domain.user.service.UserService;
 import blaybus.hair_mvp.utils.SuccessResponse;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class DesignerController {
 
     private final DesignerService designerService;
+    private final ScheduleService scheduleService;
     private final UserService userService;
     private final SecurityContextHelper securityContextHelper;
-    private final UserRepository userRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllDesigner(
@@ -82,6 +86,16 @@ public class DesignerController {
     public ResponseEntity<?> getDesignerDetail(@PathVariable UUID designerId) {
         DesignerResponse designer = designerService.findDesignerById(designerId);
         SuccessResponse<DesignerResponse> response = new SuccessResponse<>(true, "디자이너 상세 조회 성공", designer);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 디자이너 스케줄 조회
+     */
+    @GetMapping("/{designerId}/schedule")
+    public ResponseEntity<?> getDesignerSchedule(@PathVariable("designerId") UUID designerId) {
+        Map<LocalDate, List<TimeSlot>> designerSchedule = scheduleService.getDesignerSchedule(designerId);
+        SuccessResponse<Map<LocalDate, List<TimeSlot>>> response = new SuccessResponse<>(true, "디자이너 스케줄 조회 성공", designerSchedule);
         return ResponseEntity.ok(response);
     }
 }

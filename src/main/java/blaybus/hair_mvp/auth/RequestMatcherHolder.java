@@ -28,7 +28,7 @@ public class RequestMatcherHolder {
             new RequestInfo(PUT, "/v1/api/users/*", null),
             new RequestInfo(GET, "/v1/api/users/*", null),
             // 디자이너 조회
-            new RequestInfo(GET, "/v1/api/designer/*", null),
+            new RequestInfo(GET, "/v1/api/designer/**", null),
             //  디자이너 사용자
             new RequestInfo(POST, "/designers/*", Role.DESIGNER),
             new RequestInfo(GET, "/designers/*", Role.DESIGNER),
@@ -39,7 +39,6 @@ public class RequestMatcherHolder {
             new RequestInfo(GET, "/online-payment.kakaopay.com/*",null),
             new RequestInfo(POST,"/online/v1/payment/*",null),
             new RequestInfo(GET,"/online/v1/payment/*",null)
-
     );
 
     private final ConcurrentHashMap<String, RequestMatcher> reqMatcherCacheMap = new ConcurrentHashMap<>();
