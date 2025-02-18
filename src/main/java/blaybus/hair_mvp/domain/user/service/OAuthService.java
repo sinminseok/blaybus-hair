@@ -35,24 +35,27 @@ public class OAuthService {
     private String clientId;
 
     public UserSignupRequest getGoogleProfile(GoogleAuthRequest request) throws GeneralSecurityException, IOException {
-        GoogleIdTokenVerifier verifier = createVerifier();
-        GoogleIdToken googleIdToken = verifier.verify(request.getIdToken());
-        if (googleIdToken == null) {
-            throw new AuthExceptionCode(ErrorResponseCode.FAIL_GOOGLE_TOKEN, INVALID_GOOGLE_ID_TOKEN);
-        }
-        System.out.println("getGoogleProfileName = " + getGoogleProfilePicture(request.getAccessToken()));
-        GoogleIdToken.Payload payload = googleIdToken.getPayload();
+        // Access token을 통해 Google API에 요청하여 사용자 프로필을 가져옵니다.
+        String accessToken = request.getAccessToken();
+
+        // Google API를 통해 사용자 프로필 정보 가져오기
+        GoogleCredentials credentials = GoogleCredentials.create(new AccessToken(accessToken, null));
+        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
+
+        // People API를 사용하여 사용자 정보 가져오기
+        PeopleService peopleService = new PeopleService.Builder(new NetHttpTransport(), new GsonFactory(), requestInitializer)
+                .setApplicationName("Google OAuth2 Example")
+                .build();
+
+        // 사용자 정보 가져오기 - resourceName을 people/me로 수정
+        com.google.api.services.people.v1.model.Person profile = peopleService.people().get("people/me")
+                .setPersonFields("names,emailAddresses,photos")
+                .execute();
+
         return UserSignupRequest.builder()
-                .email(payload.getEmail())
-                .name(getGoogleProfileName(request.getAccessToken()))
-                .profileUrl(getGoogleProfilePicture(request.getAccessToken()))
+                .email(profile.getEmailAddresses().get(0).getValue())
+                .name(profile.getNames().get(0).getDisplayName())
+                .profileUrl(profile.getPhotos().get(0).getUrl())
                 .build();
     }
-
-    private GoogleIdTokenVerifier createVerifier() {
-        return new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                .setAudience(Collections.singletonList(clientId))
-                .build();
-    }
-
 }

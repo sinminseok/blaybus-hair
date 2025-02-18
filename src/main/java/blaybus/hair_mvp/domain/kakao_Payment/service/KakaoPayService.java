@@ -185,6 +185,7 @@ public class KakaoPayService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String,String> params = new HashMap<>();
+
         params.put("partner_user_id", payment.getUserId());
         params.put("partner_order_id", orderId);
         params.put("amount", String.valueOf(payment.getAmount().getTotal()));
