@@ -30,5 +30,6 @@ public interface UserMapper {
     @Mapping(target = "userProfileUrl", source = "user.profileImage")
     @Mapping(target = "reservations", source = "reservations")
     @Mapping(target = "reviews", source = "reviews")
-    MyPageResponse toMyPageResponse(User user, List<ReservationResponse> reservations, List<ReviewResponse> reviews);
+    @Mapping(target = "cancelReservations", source = "cancelReservations")
+    MyPageResponse toMyPageResponse(User user, List<ReservationResponse> reservations, List<ReservationResponse> cancelReservations, List<ReviewResponse> reviews);
 }

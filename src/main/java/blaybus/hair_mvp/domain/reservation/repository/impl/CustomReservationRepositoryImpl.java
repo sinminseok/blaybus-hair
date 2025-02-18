@@ -4,7 +4,6 @@ import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.entity.QReservation;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.reservation.repository.CustomReservationRepository;
-import blaybus.hair_mvp.domain.review.entity.QReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,6 +18,14 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
 
     private final JPAQueryFactory query;
     private QReservation qReservation = QReservation.reservation;
+
+    @Override
+    public List<Reservation> findCancelReservationByUserId(UUID userId) {
+        return query.selectFrom(qReservation)
+                .where(qReservation.user.id.eq(userId)
+                        .and(qReservation.paymentStatus.eq(Status.CANCEL_PAYMENT)))
+                .fetch();
+    }
 
     @Override
     public List<Reservation> findCurrentReservationByUserId(UUID userId) {

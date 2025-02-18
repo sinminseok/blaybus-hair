@@ -21,17 +21,6 @@ public class RequestMatcherHolder {
     private static final List<RequestInfo> REQUEST_INFO_LIST = List.of(
             //회원가입, 로그인
             new RequestInfo(POST, "/v1/api/auth/login/google", null),
-            new RequestInfo(POST, "/v1/api/users", null),
-            // 일반 사용자
-//            new RequestInfo(POST, "/clients/*", Role.CLIENT),
-//            new RequestInfo(GET, "/clients/*", Role.CLIENT),
-//            new RequestInfo(PUT, "/v1/api/users/*", null),
-//            // 디자이너 조회
-//            new RequestInfo(GET, "/v1/api/designer/*", null),
-//            //  디자이너 사용자
-//            new RequestInfo(POST, "/designers/*", Role.DESIGNER),
-//            new RequestInfo(GET, "/designers/*", Role.DESIGNER),
-            // 카카오페이
             new RequestInfo(POST,"/open-api.kakaopay.com/*",null),
             new RequestInfo(GET,"/open-api.kakaopay.com/*",null),
             new RequestInfo(POST, "/online-payment.kakaopay.com/*",null),
