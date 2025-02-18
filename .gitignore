@@ -42,3 +42,5 @@ out/
 .src/main/resources/google-calendar-credentials.json
 src/main/resources/local.env.env
 src/main/resources/application-aws.yml
+
+/src/main/generated/*

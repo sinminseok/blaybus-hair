@@ -1,5 +1,7 @@
 package blaybus.hair_mvp.domain.user.service;
 
+
+import blaybus.hair_mvp.domain.user.dto.UserSurveyRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
 import blaybus.hair_mvp.domain.reservation.mapper.ReservationMapper;
 import blaybus.hair_mvp.domain.reservation.repository.ReservationRepository;
@@ -8,6 +10,7 @@ import blaybus.hair_mvp.domain.review.mapper.ReviewMapper;
 import blaybus.hair_mvp.domain.review.repository.ReviewRepository;
 import blaybus.hair_mvp.domain.user.dto.MyPageResponse;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyResponse;
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.domain.user.mapper.UserMapper;
 import blaybus.hair_mvp.domain.user.repository.UserRepository;
@@ -19,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
 
 import static blaybus.hair_mvp.constants.ErrorMessages.NOT_EXIST_USER_EMAIL_MESSAGE;
@@ -52,6 +56,27 @@ public class UserService {
     public Optional<User> findByEmail(final String email){
         return userRepository.findByEmail(email);
     }
+
+
+    public UserSurveyResponse getUserSurvey(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        return UserSurveyResponse.builder()
+                .faceShape(user.getFaceShape())
+                .styling(user.getStyling())
+                .personalColor(user.getPersonalColor())
+                .hairCondition(user.getHairCondition())
+                .build();
+    }
+
+
+    @Transactional
+    public void updateUserSurvey(String email, UserSurveyRequest request, String styling) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        user.updateSurvey(request, styling);
+    }
+
 
     public MyPageResponse findMyPageInformation(final String email){
         User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(email), NOT_EXIST_USER_EMAIL_MESSAGE);

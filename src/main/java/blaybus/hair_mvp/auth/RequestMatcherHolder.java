@@ -21,13 +21,15 @@ public class RequestMatcherHolder {
     private static final List<RequestInfo> REQUEST_INFO_LIST = List.of(
             //회원가입, 로그인
             new RequestInfo(POST, "/v1/api/auth/login/google", null),
+            new RequestInfo(POST, "/v1/api/users", null),
+
+            // 카카오페이
             new RequestInfo(POST,"/open-api.kakaopay.com/*",null),
             new RequestInfo(GET,"/open-api.kakaopay.com/*",null),
             new RequestInfo(POST, "/online-payment.kakaopay.com/*",null),
             new RequestInfo(GET, "/online-payment.kakaopay.com/*",null),
             new RequestInfo(POST,"/online/v1/payment/*",null),
             new RequestInfo(GET,"/online/v1/payment/*",null)
-
     );
 
     private final ConcurrentHashMap<String, RequestMatcher> reqMatcherCacheMap = new ConcurrentHashMap<>();
