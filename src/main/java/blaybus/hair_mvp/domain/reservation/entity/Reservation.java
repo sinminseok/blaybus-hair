@@ -47,6 +47,7 @@ public class Reservation {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Setter
     @Column(name = "payment_status", nullable = false)
     private Status paymentStatus;
 

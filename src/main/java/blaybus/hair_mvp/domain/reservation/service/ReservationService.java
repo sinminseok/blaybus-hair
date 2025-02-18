@@ -3,6 +3,7 @@ package blaybus.hair_mvp.domain.reservation.service;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
+import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
@@ -74,10 +75,17 @@ public class ReservationService {
         // 1시간 추가
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(googleDateTime.getValue());
-        calendar.add(Calendar.HOUR, 1);  // 1시간 추가
+        calendar.add(Calendar.HOUR, 1);
         DateTime endDateTime = new DateTime(calendar.getTimeInMillis());
         // Google Meet 링크 생성
         String meetLink = googleMeetHelper.createGoogleMeetLink(designer.getName(), "미용실 예약 정보", googleDateTime, endDateTime);
         reservation.setGoogleMeetLink(meetLink);
+    }
+
+    @Transactional
+    public void cancelReservation(final UUID reservationId) {
+        Reservation reservation = OptionalUtil.getOrElseThrow(reservationRepository.findById(reservationId), NOT_EXIST_RESERVATION_ID_MESSAGE);
+        //todo 환불 로직 추가
+        reservation.setPaymentStatus(Status.CANCEL_PAYMENT);
     }
 }
