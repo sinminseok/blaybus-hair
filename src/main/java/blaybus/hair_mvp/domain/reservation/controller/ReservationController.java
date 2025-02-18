@@ -9,6 +9,8 @@ import blaybus.hair_mvp.domain.reservation.service.ReservationService;
 
 import blaybus.hair_mvp.domain.user.entity.User;
 import blaybus.hair_mvp.utils.SuccessResponse;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class ReservationController {
      * 결제 완료 후 호출 될 API
      */
     @PostMapping
-    public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request){
+    public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request) throws IOException {
         ReservationCreateResponse reservationResponse = reservationService.save(request, securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "예약 성공", reservationResponse);
         return ResponseEntity.ok(response);

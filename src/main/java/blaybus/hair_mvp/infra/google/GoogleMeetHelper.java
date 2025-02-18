@@ -1,5 +1,8 @@
 package blaybus.hair_mvp.infra.google;
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.JsonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.*;
@@ -7,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -23,7 +27,7 @@ public class GoogleMeetHelper {
                 .setConferenceData(new ConferenceData()
                         .setCreateRequest(new CreateConferenceRequest()
                                 .setRequestId(UUID.randomUUID().toString())
-                                .setConferenceSolutionKey(new ConferenceSolutionKey().setType("eventHangout"))
+                                .setConferenceSolutionKey(new ConferenceSolutionKey().setType("hangoutsMeet"))
                         ));
 
         EventDateTime start = new EventDateTime()
@@ -40,6 +44,9 @@ public class GoogleMeetHelper {
                 .setConferenceDataVersion(1)
                 .execute();
 
+        System.out.println("------------");
+        System.out.println(createdEvent.getHtmlLink());
+        System.out.println(createdEvent.getHangoutLink());
         return createdEvent.getHangoutLink();
     }
 
