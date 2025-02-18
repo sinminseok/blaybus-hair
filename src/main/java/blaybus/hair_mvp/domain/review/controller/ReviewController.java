@@ -22,14 +22,14 @@ public class ReviewController {
     private final SecurityContextHelper securityContextHelper;
 
     @PostMapping
-    public ResponseEntity<?> saveReview(@RequestBody final ReviewRequest reviewRequest){
+    public ResponseEntity<?> saveReview(@RequestBody final ReviewRequest reviewRequest) {
         reviewService.save(reviewRequest, securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "후기 등록 성공", null);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/designer")
-    public ResponseEntity<?> findAllByDesigner(@RequestParam final UUID designerId){
+    public ResponseEntity<?> findAllByDesigner(@RequestParam final UUID designerId) {
         List<ReviewResponse> reviews = reviewService.findAllByDesignerId(designerId);
         SuccessResponse response = new SuccessResponse(true, "디자이너 후기 조회 성공", reviews);
         return new ResponseEntity<>(response, HttpStatus.OK);

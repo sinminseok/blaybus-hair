@@ -2,6 +2,8 @@ package blaybus.hair_mvp.domain.user.service;
 
 import blaybus.hair_mvp.domain.user.dto.GoogleAuthRequest;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
+import blaybus.hair_mvp.exception.ErrorResponseCode;
+import blaybus.hair_mvp.exception.code.AuthExceptionCode;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -36,8 +38,9 @@ public class OAuthService {
         GoogleIdTokenVerifier verifier = createVerifier();
         GoogleIdToken googleIdToken = verifier.verify(request.getIdToken());
         if (googleIdToken == null) {
-            throw new IllegalBlockSizeException(INVALID_GOOGLE_ID_TOKEN);
+            throw new AuthExceptionCode(ErrorResponseCode.FAIL_GOOGLE_TOKEN, INVALID_GOOGLE_ID_TOKEN);
         }
+        System.out.println("getGoogleProfileName = " + getGoogleProfilePicture(request.getAccessToken()));
         GoogleIdToken.Payload payload = googleIdToken.getPayload();
         return UserSignupRequest.builder()
                 .email(payload.getEmail())

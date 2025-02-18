@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/api/designer")
+@RequestMapping("/v1/api/designers")
 public class DesignerController {
 
     private final DesignerService designerService;

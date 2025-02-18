@@ -38,10 +38,15 @@ public class ReservationController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserReservations(@PathVariable UUID userId){
-        List<ReservationResponse> reservations = reservationService.findReservationsByUserId(userId);
-        SuccessResponse<List<ReservationResponse>> response = new SuccessResponse<>(true, "회원 예약 조회 성공", reservations);
+    /**
+     * 현재 예약된 내역 조회 API
+     */
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentReservation(){
+        List<ReservationResponse> currentReservations = reservationService.findCurrentReservations(securityContextHelper.getEmailInToken());
+        SuccessResponse response = new SuccessResponse(true, "현재 예약 조회 성공", currentReservations);
         return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
+
 }

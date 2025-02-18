@@ -22,16 +22,7 @@ public class RequestMatcherHolder {
             //회원가입, 로그인
             new RequestInfo(POST, "/v1/api/auth/login/google", null),
             new RequestInfo(POST, "/v1/api/users", null),
-            // 일반 사용자
-            new RequestInfo(POST, "/clients/*", Role.CLIENT),
-            new RequestInfo(GET, "/clients/*", Role.CLIENT),
-            new RequestInfo(PUT, "/v1/api/users/*", null),
-            new RequestInfo(GET, "/v1/api/users/*", null),
-            // 디자이너 조회
-            new RequestInfo(GET, "/v1/api/designer/**", null),
-            //  디자이너 사용자
-            new RequestInfo(POST, "/designers/*", Role.DESIGNER),
-            new RequestInfo(GET, "/designers/*", Role.DESIGNER),
+
             // 카카오페이
             new RequestInfo(POST,"/open-api.kakaopay.com/*",null),
             new RequestInfo(GET,"/open-api.kakaopay.com/*",null),
@@ -43,9 +34,6 @@ public class RequestMatcherHolder {
 
     private final ConcurrentHashMap<String, RequestMatcher> reqMatcherCacheMap = new ConcurrentHashMap<>();
 
-    /**
-     * if role == null, return permitAll Path
-     */
     public RequestMatcher getRequestMatchersByMinRole(@Nullable Role minRole) {
         var key = getKeyByRole(minRole);
         if (!reqMatcherCacheMap.containsKey(key)) {

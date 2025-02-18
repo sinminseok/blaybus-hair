@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  hair_mvp:
+    image: minseok2000/hair_mvp:latest
+    container_name: hair_mvp
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    env_file:
+      - /home/ubuntu/.env
