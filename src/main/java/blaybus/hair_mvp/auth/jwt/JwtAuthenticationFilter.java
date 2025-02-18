@@ -13,7 +13,9 @@ import blaybus.hair_mvp.auth.service.LoginService;
 import blaybus.hair_mvp.constants.JwtMetadata;
 import blaybus.hair_mvp.domain.user.entity.RefreshToken;
 import blaybus.hair_mvp.domain.user.repository.RefreshTokenRepository;
+import blaybus.hair_mvp.exception.ErrorResponse;
 import blaybus.hair_mvp.exception.ErrorResponseCode;
+import blaybus.hair_mvp.exception.code.AccessTokenExceptionCode;
 import blaybus.hair_mvp.exception.code.AuthExceptionCode;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,28 +64,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-
     private void validateRefreshToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final Optional<String> refreshToken = getRefreshTokenFromCookie(request);
-        if(refreshToken.isEmpty()) return;
+        if (refreshToken.isEmpty()) return;
         jwtService.verifyToken(refreshToken.get());
-        //인증 통과
         Optional<RefreshToken> byToken = refreshTokenRepository.findByToken(refreshToken.get());
-        if(byToken.isEmpty()){
+        if (byToken.isEmpty()) {
             throw new AuthExceptionCode(ErrorResponseCode.FAIL_LOGIN, "refreshToken 인증 실패");
         }
         LoginResponse loginResponse = loginService.login(byToken.get().getUser().getEmail());
-//        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().getValue());
-//        response.addHeader(HttpHeaders.AUTHORIZATION, loginResponse.getRefreshToken());
-        SuccessResponse apiResponse = new SuccessResponse(false,  "JWT Reissue", null);
+        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, loginResponse.getRefreshTokenCookie().toString());
+        SuccessResponse apiResponse = new SuccessResponse(true, "Jwt Reissue", null);
         String responseBody = objectMapper.writeValueAsString(apiResponse);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.getWriter().write(responseBody);
         response.getWriter().flush();
         response.getWriter().close();
-        return;
     }
+
+
+
 
     private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String accessToken = getAccessTokenFromCookie(request);
@@ -95,9 +97,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
+
     }
 
-    private Optional<String> getRefreshTokenFromCookie(HttpServletRequest request){
+    private Optional<String> getRefreshTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(JwtMetadata.REFRESH_TOKEN)) {

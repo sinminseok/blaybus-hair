@@ -3,6 +3,7 @@ package blaybus.hair_mvp.auth.jwt;
 import java.io.IOException;
 
 import blaybus.hair_mvp.auth.FilterExceptionResolver;
+import blaybus.hair_mvp.exception.ErrorResponse;
 import blaybus.hair_mvp.exception.ErrorResponseCode;
 import blaybus.hair_mvp.exception.code.AuthExceptionCode;
 import org.springframework.http.MediaType;
@@ -18,11 +19,15 @@ public class JwtFilterExceptionResolver implements FilterExceptionResolver<JwtEx
 
     @Override
     public void setResponse(HttpServletResponse response, JwtException ex) throws IOException {
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter()
-                .write(new ObjectMapper().writeValueAsString(
-                        new AuthExceptionCode(ErrorResponseCode.NOT_VALID_TOKEN, ex.getMessage())));
+        response.setContentType("application/json");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(new AuthExceptionCode(ErrorResponseCode.FAIL_ACCESS_TOKEN, "InValid Jwt Token"))));
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//        response.getWriter()
+//                .write(new ObjectMapper().writeValueAsString(
+//                        new AuthExceptionCode(ErrorResponseCode.NOT_VALID_TOKEN, ex.getMessage())));
 
     }
 }

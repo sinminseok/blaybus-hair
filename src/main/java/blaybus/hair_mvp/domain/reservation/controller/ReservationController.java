@@ -1,6 +1,7 @@
 package blaybus.hair_mvp.domain.reservation.controller;
 
 import blaybus.hair_mvp.auth.SecurityContextHelper;
+import blaybus.hair_mvp.domain.designer.dto.DesignerResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
@@ -13,12 +14,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +31,7 @@ public class ReservationController {
     public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request){
         ReservationCreateResponse reservationResponse = reservationService.save(request, securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "예약 성공", reservationResponse);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -45,8 +41,17 @@ public class ReservationController {
     public ResponseEntity<?> getCurrentReservation(){
         List<ReservationResponse> currentReservations = reservationService.findCurrentReservations(securityContextHelper.getEmailInToken());
         SuccessResponse response = new SuccessResponse(true, "현재 예약 조회 성공", currentReservations);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok(response);
 
     }
 
+    /**
+     * 예약 취소 API
+     */
+    @PatchMapping("/{reservationId}")
+    public ResponseEntity<?> getDesignerDetail(@PathVariable UUID reservationId) {
+        reservationService.cancelReservation(reservationId);
+        SuccessResponse response = new SuccessResponse(true, "예약 취소 성공", null);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -51,7 +51,7 @@ public class LoginService {
     }
 
 
-    private RefreshToken updateRefreshToken(User user, String token){
+    public RefreshToken updateRefreshToken(User user, String token){
         refreshTokenRepository.findByUser(user).ifPresent(refreshTokenRepository::delete);
         return refreshTokenRepository.save(RefreshToken.builder()
                 .user(user)
