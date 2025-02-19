@@ -1,12 +1,16 @@
 package blaybus.hair_mvp.exception;
 
-import java.util.HashMap;
-public class ErrorResponse extends HashMap<String, Object> {
+import lombok.Getter;
+
+@Getter
+public class ErrorResponse {
+    private final boolean success;
+    private final String message;
+    private final String errorCode;
+
     public ErrorResponse(ExceptionBase exception) {
-        super();
-        this.put("error", true);
-        //this.put("http_status_code", exception.getStatusCode());
-        this.put("error_code", exception.getErrorCode().getCode());
-        this.put("error_message", exception.getErrorMessage());
+        this.success = false;
+        this.message = exception.getErrorMessage();
+        this.errorCode = String.valueOf(exception.getErrorCode().getCode());
     }
 }

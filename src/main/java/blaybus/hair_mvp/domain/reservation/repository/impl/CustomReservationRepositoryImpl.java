@@ -41,7 +41,7 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
     public List<Reservation> findNotCancelReservationByUserId(UUID userId) {
         return query.selectFrom(qReservation)
                 .where(qReservation.user.id.eq(userId)
-                        .and(qReservation.paymentStatus.ne(Status.CANCEL_PAYMENT)))
+                        .and(qReservation.status.ne(Status.CANCEL_PAYMENT)))
                 .fetch();
     }
 

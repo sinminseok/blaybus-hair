@@ -19,15 +19,9 @@ public class JwtFilterExceptionResolver implements FilterExceptionResolver<JwtEx
 
     @Override
     public void setResponse(HttpServletResponse response, JwtException ex) throws IOException {
-
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(new AuthExceptionCode(ErrorResponseCode.FAIL_ACCESS_TOKEN, "InValid Jwt Token"))));
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        response.getWriter()
-//                .write(new ObjectMapper().writeValueAsString(
-//                        new AuthExceptionCode(ErrorResponseCode.NOT_VALID_TOKEN, ex.getMessage())));
 
     }
 }
