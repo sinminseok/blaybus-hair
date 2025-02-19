@@ -4,7 +4,7 @@ import blaybus.hair_mvp.domain.payment.dto.*;
 
 import blaybus.hair_mvp.domain.payment.entity.Payment;
 import blaybus.hair_mvp.domain.payment.entity.KakaoPayProperties;
-import blaybus.hair_mvp.domain.payment.entity.PaymentStatus;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import blaybus.hair_mvp.domain.payment.mapper.KakaoPaymentMapper;
 import blaybus.hair_mvp.domain.payment.repository.PaymentRepository;
 import blaybus.hair_mvp.utils.OptionalUtil;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class KakaoPayService {
 
     private static final String KAKAO_PAY_API_HOST = "https://open-api.kakaopay.com";
-    private static final String KAKAO_TRANSACTION_API_LINK = "https://link.kakaopay.com/_/PofpGNf";
+
 
     private final KakaoPayProperties kakaoPayProperties;
     private final PaymentRepository paymentRepository;
@@ -49,15 +49,15 @@ public class KakaoPayService {
         Map<String, String> params = new HashMap<>();
 
         params.put("cid", kakaoPayProperties.getCid());
-        params.put("partner_order_id", request.getOrderId());
-        params.put("partner_user_id", request.getUserId());
+        params.put("partner_order_id", String.valueOf(request.getOrderId()));
+        params.put("partner_user_id", String.valueOf(request.getUserId()));
         params.put("item_name", request.getItemName());
         params.put("quantity", "1");
         params.put("total_amount", String.valueOf(request.getAmount().getTotal()));
         params.put("tax_free_amount", "0");
-        params.put("approval_url", "http://43.201.231.114:8080/online/v1/payment/approve?orderId=" + request.getOrderId());
-        params.put("cancel_url", " http://43.201.231.114:8080/online/v1/payment/cancel?orderId=" + request.getOrderId());
-        params.put("fail_url", " http://43.201.231.114:8080/online/v1/payment/fail");
+        params.put("approval_url", "http://localhost:8080/online/v1/payment/approve?orderId=" + request.getOrderId());
+        params.put("cancel_url", "http://localhost:8080/online/v1/payment/cancel?orderId=" + request.getOrderId());
+        params.put("fail_url", "http://localhost:8080/online/v1/payment/fail");
 
         // 헤더와 바디 붙이기
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity(params, headers);
@@ -67,18 +67,18 @@ public class KakaoPayService {
             );
 
             Payment payment = Payment.builder()
-                    .orderId(UUID.fromString(request.getOrderId()))
-                    .userId(UUID.fromString(request.getUserId()))
+                    .orderId(UUID.fromString(String.valueOf(request.getOrderId())))
+                    .userId(UUID.fromString(String.valueOf(request.getUserId())))
                     .tid((kakaoReadyResponse.getTid()))
                     .cid(kakaoPayProperties.getCid())
                     .item_name(request.getItemName())
-                    .paymentStatus(PaymentStatus.READY)
+                    .status(Status.READY)
                     .amount(request.getAmount())
                     .created_at(LocalDateTime.parse(kakaoReadyResponse.getCreated_at()))
                     .build();
 
             paymentRepository.save(payment);
-            System.out.println("결제 승인 정보 : " + kakaoReadyResponse);
+            System.out.println("결제 요청 정보 : " + kakaoReadyResponse);
 
             return kakaoReadyResponse;
         }
@@ -164,29 +164,29 @@ public class KakaoPayService {
 
 
     // 수정 중
-    public KakaoDepositResponse depositPayment(){
-
-        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization","SECRET_KEY " + kakaoPayProperties.getSecretKey());
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        UUID orderId = UUID.randomUUID();
-
-
-        Map<String,String> params = new HashMap<>();
-
-//        params.put("partner_user_id", String.valueOf(payment.getUserId()));
-        params.put("partner_order_id", String.valueOf(orderId));
-//        params.put("amount", String.valueOf(payment.getAmount().getTotal()));
-
-        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(params, headers);
-        KakaoDepositResponse response = restTemplate.postForObject(
-                KAKAO_TRANSACTION_API_LINK + "/connect/api/v1/money-transaction",requestEntity,KakaoDepositResponse.class
-        );
-
-
-        return response;
-
-    }
+//    public KakaoDepositResponse depositPayment(){
+//
+//        HttpHeaders headers = new HttpHeaders();
+////        headers.set("Authorization","SECRET_KEY " + kakaoPayProperties.getSecretKey());
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        UUID orderId = UUID.randomUUID();
+//
+//
+//        Map<String,String> params = new HashMap<>();
+//
+////        params.put("partner_user_id", String.valueOf(payment.getUserId()));
+//        params.put("partner_order_id", String.valueOf(orderId));
+////        params.put("amount", String.valueOf(payment.getAmount().getTotal()));
+//
+//        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(params, headers);
+//        KakaoDepositResponse response = restTemplate.postForObject(
+//                KAKAO_TRANSACTION_API_LINK + "/connect/api/v1/money-transaction",requestEntity,KakaoDepositResponse.class
+//        );
+//
+//
+//        return response;
+//
+//    }
 
 }

@@ -2,7 +2,6 @@ package blaybus.hair_mvp.domain.payment.repository;
 
 
 import blaybus.hair_mvp.domain.payment.entity.Payment;
-import blaybus.hair_mvp.domain.payment.entity.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

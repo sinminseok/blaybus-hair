@@ -1,6 +1,6 @@
 package blaybus.hair_mvp.domain.reservation.repository.impl;
 
-import blaybus.hair_mvp.domain.payment.entity.PaymentStatus;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.entity.QReservation;
 import blaybus.hair_mvp.domain.reservation.entity.Reservation;
 import blaybus.hair_mvp.domain.reservation.repository.CustomReservationRepository;
@@ -23,7 +23,7 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
     public List<Reservation> findCancelReservationByUserId(UUID userId) {
         return query.selectFrom(qReservation)
                 .where(qReservation.user.id.eq(userId)
-                        .and(qReservation.paymentStatus.eq(PaymentStatus.CANCEL_PAYMENT)))
+                        .and(qReservation.status.eq(Status.CANCEL_PAYMENT)))
                 .fetch();
     }
 
@@ -34,7 +34,7 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
 
         return query.selectFrom(qReservation)
                 .where(qReservation.user.id.eq(userId)
-                        .and(qReservation.paymentStatus.eq(PaymentStatus.SUCCESS_PAYMENT))
+                        .and(qReservation.status.eq(Status.SUCCESS_PAYMENT))
                         .and(qReservation.reservationAt.gt(now)))
                 .fetch();
     }

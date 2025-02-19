@@ -3,7 +3,7 @@ package blaybus.hair_mvp.domain.reservation.service;
 import blaybus.hair_mvp.domain.designer.entity.Designer;
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 import blaybus.hair_mvp.domain.designer.repository.DesignerRepository;
-import blaybus.hair_mvp.domain.payment.entity.PaymentStatus;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationCreateResponse;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationRequest;
 import blaybus.hair_mvp.domain.reservation.dto.ReservationResponse;
@@ -85,6 +85,6 @@ public class ReservationService {
     public void cancelReservation(final UUID reservationId) {
         Reservation reservation = OptionalUtil.getOrElseThrow(reservationRepository.findById(reservationId), NOT_EXIST_RESERVATION_ID_MESSAGE);
         //todo 환불 로직 추가
-        reservation.setPaymentStatus(PaymentStatus.CANCEL_PAYMENT);
+        reservation.setStatus(Status.CANCEL_PAYMENT);
     }
 }

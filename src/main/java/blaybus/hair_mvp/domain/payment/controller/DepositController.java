@@ -16,11 +16,13 @@ import java.util.UUID;
 public class DepositController {
 
     private final KakaoPayService kakaoPayService;
+    private static final String KAKAO_TRANSACTION_API_LINK = "https://link.kakaopay.com/_/PofpGNf";
+
     // 코드 발급
     @GetMapping("/link")
     public ResponseEntity<?> deposit(){
-        KakaoDepositResponse kakaoDepositResponse = kakaoPayService.depositPayment();
-        SuccessResponse response = new SuccessResponse(true,"발급 성공", kakaoDepositResponse);
+        String redirectUrl = KAKAO_TRANSACTION_API_LINK;
+        SuccessResponse response = new SuccessResponse(true,"발급 성공", redirectUrl);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

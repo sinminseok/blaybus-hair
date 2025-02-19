@@ -34,7 +34,7 @@ public class Payment {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private Status status;
 
     @Embedded
     private Amount amount;
@@ -55,7 +55,7 @@ public class Payment {
                 kakaoApproveResponse.getApproved_at(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         );
-        this.paymentStatus = PaymentStatus.SUCCESS_PAYMENT;
+        this.status = Status.SUCCESS_PAYMENT;
     }
     // 결제 취소 메서드
     public void cancelPayment(KakaoCancelResponse kakaoCancelResponse) {
@@ -67,7 +67,7 @@ public class Payment {
                 kakaoCancelResponse.getCanceled_at(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
         ); // 취소 시간 업데이트
-        this.paymentStatus = PaymentStatus.CANCEL_PAYMENT; // 상태 변경
+        this.status = Status.CANCEL_PAYMENT; // 상태 변경
     }
 
 
