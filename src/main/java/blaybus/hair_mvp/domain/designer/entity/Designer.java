@@ -58,6 +58,9 @@ public class Designer {
     @Enumerated(EnumType.STRING)
     private MeetingType meetingType;
 
+    @Column(name = "profile_url", nullable = true)
+    private String profileUrl;
+
     @Column(name = "bio", length = 30)
     private String bio; // 한줄소개
 
