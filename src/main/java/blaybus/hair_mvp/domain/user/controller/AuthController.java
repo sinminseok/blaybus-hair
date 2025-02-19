@@ -43,9 +43,9 @@ public class AuthController {
     private ResponseEntity<?> createLoginResponse(String email, String message) {
         LoginResponse loginResponse = loginService.login(email);
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().toString())
-                .header(HttpHeaders.SET_COOKIE, loginResponse.getRefreshTokenCookie().toString())
-                .body(new SuccessResponse(true, message, null));
+//                .header(HttpHeaders.SET_COOKIE, loginResponse.getAccessTokenCookie().toString())
+//                .header(HttpHeaders.SET_COOKIE, loginResponse.getRefreshTokenCookie().toString())
+                .body(new SuccessResponse(true, message, loginResponse.getAccessTokenCookie().getValue()));
     }
 }
 
