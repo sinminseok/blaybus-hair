@@ -29,13 +29,20 @@ public class CustomReservationRepositoryImpl implements CustomReservationReposit
 
     @Override
     public List<Reservation> findCurrentReservationByUserId(UUID userId) {
-        // 현재 시간
         LocalDateTime now = LocalDateTime.now();
-
         return query.selectFrom(qReservation)
                 .where(qReservation.user.id.eq(userId)
                         .and(qReservation.status.eq(Status.SUCCESS_PAYMENT))
                         .and(qReservation.reservationAt.gt(now)))
                 .fetch();
     }
+
+    @Override
+    public List<Reservation> findNotCancelReservationByUserId(UUID userId) {
+        return query.selectFrom(qReservation)
+                .where(qReservation.user.id.eq(userId)
+                        .and(qReservation.paymentStatus.ne(Status.CANCEL_PAYMENT)))
+                .fetch();
+    }
+
 }

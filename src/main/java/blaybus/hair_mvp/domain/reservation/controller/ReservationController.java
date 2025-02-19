@@ -26,9 +26,6 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final SecurityContextHelper securityContextHelper;
 
-    /**
-     * 결제 완료 후 호출 될 API
-     */
     @PostMapping
     public ResponseEntity<?> reserve(@RequestBody final ReservationRequest request) throws IOException {
         ReservationCreateResponse reservationResponse = reservationService.save(request, securityContextHelper.getEmailInToken());
@@ -36,9 +33,6 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * 현재 예약된 내역 조회 API
-     */
     @GetMapping("/current")
     public ResponseEntity<?> getCurrentReservation(){
         List<ReservationResponse> currentReservations = reservationService.findCurrentReservations(securityContextHelper.getEmailInToken());
@@ -47,9 +41,6 @@ public class ReservationController {
 
     }
 
-    /**
-     * 예약 취소 API
-     */
     @PatchMapping("/{reservationId}")
     public ResponseEntity<?> getDesignerDetail(@PathVariable UUID reservationId) {
         reservationService.cancelReservation(reservationId);

@@ -19,4 +19,5 @@ public class DesignerResponse {
     private int onlineConsultFee;
     private String bio;
     private float rating;
+    private String profileUrl;
 }

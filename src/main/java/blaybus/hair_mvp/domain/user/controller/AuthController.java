@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/login/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody final GoogleAuthRequest request) throws GeneralSecurityException, IOException {
-        UserSignupRequest userSignupRequest = oAuthService.getGoogleProfile(request);
+        UserSignupRequest userSignupRequest = oAuthService.getGoogleProfile(request.getAuthorizationCode());
         if (userService.isExistUser(userSignupRequest.getEmail())) {
             return createLoginResponse(userSignupRequest.getEmail(), "구글 로그인 성공");
         }
