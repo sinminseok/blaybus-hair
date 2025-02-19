@@ -2,7 +2,7 @@ package blaybus.hair_mvp.domain.reservation.dto;
 
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;

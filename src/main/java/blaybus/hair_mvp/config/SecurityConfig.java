@@ -55,6 +55,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/online/v1/payment/*")
                                 .permitAll()
+                                .requestMatchers("/connect/api/v1/money-transaction/link")
+                                .permitAll()
                                 .anyRequest().authenticated()
                 );
 

@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.domain.kakao_Payment.entity;
+package blaybus.hair_mvp.domain.payment.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

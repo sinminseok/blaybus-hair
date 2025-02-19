@@ -1,9 +1,11 @@
-package blaybus.hair_mvp.domain.kakao_Payment.dto;
+package blaybus.hair_mvp.domain.payment.dto;
 
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
+import blaybus.hair_mvp.domain.payment.entity.Amount;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
@@ -11,8 +13,8 @@ import lombok.*;
 @ToString
 @Builder
 public class PaymentRequest {
-    private String orderId;
-    private String userId;
+    private UUID orderId;
+    private UUID userId;
     private String itemName;
     @NotBlank
     private Amount amount;

@@ -1,17 +1,17 @@
-package blaybus.hair_mvp.domain.kakao_Payment.controller;
+package blaybus.hair_mvp.domain.payment.controller;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.*;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Payment;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
-import blaybus.hair_mvp.domain.kakao_Payment.repository.PaymentRepository;
-import blaybus.hair_mvp.domain.kakao_Payment.service.KakaoPayService;
-import blaybus.hair_mvp.domain.reservation.service.ReservationService;
+import blaybus.hair_mvp.domain.payment.dto.*;
+import blaybus.hair_mvp.domain.payment.entity.Payment;
+import blaybus.hair_mvp.domain.payment.repository.PaymentRepository;
+import blaybus.hair_mvp.domain.payment.service.KakaoPayService;
 import blaybus.hair_mvp.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @Slf4j
@@ -31,7 +31,7 @@ public class KakaoPayController {
     }
 
     @GetMapping("/approve")
-    public ResponseEntity<?> successPayment(@RequestParam("pg_token") String pgToken, @RequestParam("orderId") String orderId) {
+    public ResponseEntity<?> successPayment(@RequestParam("pg_token") String pgToken, @RequestParam("orderId") UUID orderId) {
         Payment payment = paymentRepository.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("존재하지 않은 결제 정보입니다"));
         String tid = payment.getTid();
         KakaoApproveResponse kakaoApproveResponse = kakaoPayService.kakaoPayApprove(tid, pgToken);
@@ -52,7 +52,7 @@ public class KakaoPayController {
 
     // 결제 승인 후 결제 취소
     @PostMapping("/cancel")
-    public ResponseEntity<?> cancelPayment(@RequestParam("orderId") String orderId) {
+    public ResponseEntity<?> cancelPayment(@RequestParam("orderId") UUID orderId) {
         Payment approvedPayment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않은 주문아이디"));
         String tid = approvedPayment.getTid();

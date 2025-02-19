@@ -1,7 +1,6 @@
-package blaybus.hair_mvp.domain.kakao_Payment.dto;
+package blaybus.hair_mvp.domain.payment.dto;
 
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Amount;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.Amount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

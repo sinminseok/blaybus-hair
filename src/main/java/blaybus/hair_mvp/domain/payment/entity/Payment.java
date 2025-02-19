@@ -1,12 +1,13 @@
-package blaybus.hair_mvp.domain.kakao_Payment.entity;
+package blaybus.hair_mvp.domain.payment.entity;
 
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoApproveResponse;
-import blaybus.hair_mvp.domain.kakao_Payment.dto.KakaoCancelResponse;
+import blaybus.hair_mvp.domain.payment.dto.KakaoApproveResponse;
+import blaybus.hair_mvp.domain.payment.dto.KakaoCancelResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -25,9 +26,9 @@ public class Payment {
 
     private String cid; // 가맹점 코드
 
-    private String orderId;
+    private UUID orderId;
 
-    private String userId;
+    private UUID userId;
 
     private String item_name;
 

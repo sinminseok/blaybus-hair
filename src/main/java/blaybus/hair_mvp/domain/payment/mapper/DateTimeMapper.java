@@ -1,4 +1,4 @@
-package blaybus.hair_mvp.domain.kakao_Payment.mapper;
+package blaybus.hair_mvp.domain.payment.mapper;
 
 import org.mapstruct.Named;
 

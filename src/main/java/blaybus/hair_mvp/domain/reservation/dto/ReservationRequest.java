@@ -1,7 +1,7 @@
 package blaybus.hair_mvp.domain.reservation.dto;
 
 import blaybus.hair_mvp.domain.designer.entity.MeetingType;
-import blaybus.hair_mvp.domain.kakao_Payment.entity.Status;
+import blaybus.hair_mvp.domain.payment.entity.Status;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +16,5 @@ public class ReservationRequest {
     private Integer price;
     private MeetingType meetingType;
     private LocalDateTime reservationAt;
-    private Status paymentStatus;
+    private Status status;
 }
