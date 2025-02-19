@@ -1,5 +1,6 @@
 package blaybus.hair_mvp.exception;
 
+import blaybus.hair_mvp.exception.code.AccessTokenExceptionCode;
 import blaybus.hair_mvp.exception.code.AuthExceptionCode;
 import blaybus.hair_mvp.exception.code.EmailExistExceptionCode;
 import blaybus.hair_mvp.exception.code.NotFoundDataExceptionCode;
@@ -21,7 +22,10 @@ import java.nio.charset.StandardCharsets;
 public class ExceptionResolver {
     private static final Logger logger = LogManager.getLogger(ExceptionResolver.class);
 
-    @ExceptionHandler({AuthExceptionCode.class, EmailExistExceptionCode.class, NotFoundDataExceptionCode.class,})
+    @ExceptionHandler({AccessTokenExceptionCode.class,
+            AuthExceptionCode.class,
+            EmailExistExceptionCode.class,
+            NotFoundDataExceptionCode.class,})
     @ResponseBody
     public ErrorResponse handleServerException(HttpServletRequest request, Exception exception) {
         logException(request, (ExceptionBase) exception);

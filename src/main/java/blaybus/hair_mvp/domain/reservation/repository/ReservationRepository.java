@@ -16,9 +16,6 @@ import java.util.UUID;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, UUID>, CustomReservationRepository {
-    @EntityGraph(attributePaths = {"designer"})
-
-    List<Reservation> findByUser_Id(UUID userId);
 
     @Query("SELECT r.reservationAt FROM Reservation r WHERE r.designer.id = :designerId AND r.reservationAt BETWEEN :startDate AND :endDate")
     List<LocalDateTime> findByDesignerIdAndDateRange(

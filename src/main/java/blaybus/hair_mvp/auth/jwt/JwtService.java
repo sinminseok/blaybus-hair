@@ -7,6 +7,9 @@ import javax.crypto.SecretKey;
 import blaybus.hair_mvp.auth.dto.AccessTokenPayload;
 import blaybus.hair_mvp.auth.dto.RefreshTokenPayload;
 import blaybus.hair_mvp.domain.user.entity.Role;
+import blaybus.hair_mvp.exception.ErrorResponseCode;
+import blaybus.hair_mvp.exception.code.AccessTokenExceptionCode;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +37,13 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
-    public Claims verifyToken(String jwt) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(jwt)
-                .getPayload();
+    public Claims verifyToken(String jwt) throws AccessTokenExceptionCode {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(jwt)
+                    .getPayload();
+
     }
 
     public AccessTokenPayload createAccessTokenPayload(Claims payload) {

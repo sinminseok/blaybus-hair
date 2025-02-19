@@ -8,7 +8,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class GoogleAuthRequest {
-    private String idToken;
-    private String accessToken;
-
+    private String authorizationCode;
 }

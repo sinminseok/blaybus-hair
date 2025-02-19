@@ -38,67 +38,61 @@ public class UserService {
     private final ReviewMapper reviewMapper;
     private final ReservationMapper reservationMapper;
 
-    /**
-     * 사용자 계정 생성 메서드
-     */
     public void save(final UserSignupRequest request){
         User user = userMapper.toEntity(request);
         userRepository.save(user);
     }
 
-    /**
-     * email 존재 여부 확인 메서드
-     */
     public boolean isExistUser(final String email){
         return userRepository.findByEmail(email).isPresent();
     }
 
-    public Optional<User> findByEmail(final String email){
-        return userRepository.findByEmail(email);
-    }
-
-
     public UserSurveyResponse getUserSurvey(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
-        return UserSurveyResponse.builder()
-                .faceShape(user.getFaceShape())
-                .styling(user.getStyling())
-                .personalColor(user.getPersonalColor())
-                .hairCondition(user.getHairCondition())
-                .build();
+        User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(email), NOT_EXIST_USER_EMAIL_MESSAGE);
+        return userMapper.toUserSurveyResponse(user);
     }
 
 
     @Transactional
     public void updateUserSurvey(String email, UserSurveyRequest request, String styling) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(email), NOT_EXIST_USER_EMAIL_MESSAGE);
         user.updateSurvey(request, styling);
     }
 
 
-    public MyPageResponse findMyPageInformation(final String email){
+    public MyPageResponse findMyPageInformation(final String email) {
+        // 사용자 조회
         User user = OptionalUtil.getOrElseThrow(userRepository.findByEmail(email), NOT_EXIST_USER_EMAIL_MESSAGE);
-        List<ReservationResponse> reservations = new ArrayList<>();
-        //예약 내역
-        reservationRepository.findByUserId(user.getId()).stream()
-                .forEach(reservation -> {
-                    if (reservation.getReservationAt().isBefore(LocalDateTime.now())){
-                        reservations.add(reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), false));
-                    }
-                    if (!reservation.getReservationAt().isBefore(LocalDateTime.now())){
-                        reservations.add(reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), true));
-                    }
-                });
 
-        List<ReservationResponse> cancelReservations = reservationRepository.findCancelReservationByUserId(user.getId()).stream()
-                .map(reservation -> reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), false))
-                .collect(Collectors.toList());
+        // 예약, 취소된 예약, 리뷰 정보 가져오기
+        List<ReservationResponse> reservations = getReservations(user);
+        List<ReservationResponse> cancelReservations = getCancelReservations(user);
+        List<ReviewResponse> reviews = getReviews(user);
 
-        List<ReviewResponse> reviews = reviewRepository.findAllByUserId(user.getId()).stream()
-                .map(review -> reviewMapper.toResponse(review, review.getDesigner()))
-                .collect(Collectors.toList());
+        // 최종 응답 변환
         return userMapper.toMyPageResponse(user, reservations, cancelReservations, reviews);
     }
+
+    private List<ReservationResponse> getReservations(User user) {
+        LocalDateTime now = LocalDateTime.now();
+        return reservationRepository.findNotCancelReservationByUserId(user.getId()).stream()
+                .map(reservation -> {
+                    boolean isUpcoming = reservation.getReservationAt().isAfter(now);
+                    return reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), isUpcoming);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private List<ReservationResponse> getCancelReservations(User user) {
+        return reservationRepository.findCancelReservationByUserId(user.getId()).stream()
+                .map(reservation -> reservationMapper.toResponseWithCurrentState(reservation, reservation.getDesigner(), false))
+                .collect(Collectors.toList());
+    }
+
+    private List<ReviewResponse> getReviews(User user) {
+        return reviewRepository.findAllByUserId(user.getId()).stream()
+                .map(review -> reviewMapper.toResponse(review, review.getDesigner()))
+                .collect(Collectors.toList());
+    }
+
 }

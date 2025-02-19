@@ -56,7 +56,7 @@ google:
 
 logging:
   level:
-    org.hibernate.SQL: error
+    org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 kakaopay:

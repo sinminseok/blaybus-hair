@@ -25,6 +25,7 @@ public interface ReservationMapper {
     @Mapping(target = "meetingType", source = "reservation.meetingType")
     @Mapping(target = "designerName", source = "designer.name")
     @Mapping(target = "shopAddress", source = "designer.shopAddress")
+    @Mapping(target = "paymentStatus", source = "reservation.paymentStatus")
     ReservationCreateResponse toCreateResponse(Reservation reservation, Designer designer);
 
     @Mapping(target = "id", source = "reservation.id")
