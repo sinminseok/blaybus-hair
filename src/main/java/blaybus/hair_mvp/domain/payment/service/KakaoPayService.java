@@ -55,9 +55,9 @@ public class KakaoPayService {
         params.put("quantity", "1");
         params.put("total_amount", String.valueOf(request.getAmount().getTotal()));
         params.put("tax_free_amount", "0");
-        params.put("approval_url", "http://localhost:8080/online/v1/payment/approve?orderId=" + request.getOrderId());
-        params.put("cancel_url", "http://localhost:8080/online/v1/payment/cancel?orderId=" + request.getOrderId());
-        params.put("fail_url", "http://localhost:8080/online/v1/payment/fail");
+        params.put("approval_url", "http://43.201.231.114:8080/online/v1/payment/approve?orderId=" + request.getOrderId());
+        params.put("cancel_url", "http://43.201.231.114:8080/online/v1/payment/cancel?orderId=" + request.getOrderId());
+        params.put("fail_url", "http://43.201.231.114:8080/online/v1/payment/fail");
 
         // 헤더와 바디 붙이기
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity(params, headers);
