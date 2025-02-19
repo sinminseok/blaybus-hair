@@ -48,9 +48,7 @@ public class OAuthService {
 
     public UserSignupRequest getGoogleProfile(String authorizationCode) throws GeneralSecurityException, IOException {
         try {
-
             String decodedCode = URLDecoder.decode(authorizationCode, StandardCharsets.UTF_8);
-
             GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
                     HTTP_TRANSPORT, JSON_FACTORY,
                     clientId, clientSecret,
@@ -58,11 +56,9 @@ public class OAuthService {
                     .setGrantType("authorization_code")
                     .execute();
 
-
             String accessToken = tokenResponse.getAccessToken();
             String idTokenString = tokenResponse.getIdToken();
 
-            // Step 2: ID Token 검증
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(HTTP_TRANSPORT, JSON_FACTORY)
                     .setAudience(Collections.singletonList(clientId))
                     .build();
@@ -72,7 +68,6 @@ public class OAuthService {
                 throw new GeneralSecurityException("Invalid ID Token");
             }
 
-            // Step 3: Google API를 통해 사용자 프로필 정보 가져오기
             GoogleCredentials credentials = GoogleCredentials.create(new AccessToken(accessToken, null));
             HttpCredentialsAdapter requestInitializer = new HttpCredentialsAdapter(credentials);
 
