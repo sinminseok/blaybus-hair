@@ -66,6 +66,7 @@ public class KakaoPayService {
                     KAKAO_PAY_API_HOST + "/online/v1/payment/ready", requestEntity, KakaoReadyResponse.class
             );
 
+
             Payment payment = Payment.builder()
                     .orderId(UUID.fromString(String.valueOf(request.getOrderId())))
                     .userId(UUID.fromString(String.valueOf(request.getUserId())))
