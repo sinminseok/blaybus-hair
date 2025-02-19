@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            validateRefreshToken(request, response);
+            //validateRefreshToken(request, response);
             validateAccessToken(request, response, filterChain);
         } catch (JwtException ex) {
             jwtFilterExceptionResolver.setResponse(response, ex);
@@ -85,8 +85,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
-
-
     private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String accessToken = getAccessTokenFromCookie(request);
         Claims claims = jwtService.verifyToken(accessToken);
@@ -97,7 +95,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
-
     }
 
     private Optional<String> getRefreshTokenFromCookie(HttpServletRequest request) {
