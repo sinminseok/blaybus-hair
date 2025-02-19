@@ -61,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (JwtException ex) {
             jwtFilterExceptionResolver.setResponse(response, ex);
         }
-
     }
 
     private void validateRefreshToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -16,22 +16,21 @@ public class CookieService {
 
     public ResponseCookie createRefreshTokenCookie(String refreshToken) {
         return ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
+                .httpOnly(false)
                 .secure(false)
                 .maxAge(refreshKeyExpirationInS)
-                .sameSite("Strict")
+                .sameSite("Lax")
                 .path("/")
                 .build();
     }
 
     public ResponseCookie createAccessTokenCookie(String accessToken) {
         return ResponseCookie.from(JwtMetadata.ACCESS_TOKEN, accessToken)
-                .httpOnly(true)
+                .httpOnly(false)
                 .secure(false)
                 .maxAge(accessKeyExpirationInS)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("Lax")
                 .build();
     }
-
 }
