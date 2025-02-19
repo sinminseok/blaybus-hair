@@ -9,4 +9,6 @@ public interface CustomReservationRepository {
     List<Reservation> findCancelReservationByUserId(final UUID userId);
 
     List<Reservation> findCurrentReservationByUserId(final UUID userId);
+
+    List<Reservation> findNotCancelReservationByUserId(final UUID userId);
 }

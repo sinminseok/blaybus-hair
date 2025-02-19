@@ -5,6 +5,7 @@ import blaybus.hair_mvp.domain.review.dto.ReviewResponse;
 import blaybus.hair_mvp.domain.review.entity.Review;
 import blaybus.hair_mvp.domain.user.dto.MyPageResponse;
 import blaybus.hair_mvp.domain.user.dto.UserSignupRequest;
+import blaybus.hair_mvp.domain.user.dto.UserSurveyResponse;
 import blaybus.hair_mvp.domain.user.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,4 +33,10 @@ public interface UserMapper {
     @Mapping(target = "reviews", source = "reviews")
     @Mapping(target = "cancelReservations", source = "cancelReservations")
     MyPageResponse toMyPageResponse(User user, List<ReservationResponse> reservations, List<ReservationResponse> cancelReservations, List<ReviewResponse> reviews);
+
+    @Mapping(target = "faceShape", source = "user.faceShape")
+    @Mapping(target = "styling", source = "user.styling")
+    @Mapping(target = "personalColor", source = "user.personalColor")
+    @Mapping(target = "hairCondition", source = "user.hairCondition")
+    UserSurveyResponse toUserSurveyResponse(User user);
 }
