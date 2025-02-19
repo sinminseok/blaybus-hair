@@ -35,7 +35,7 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
                 if (stylingCondition == null) {
                     stylingCondition = designer.styling.contains(s);
                 } else {
-                    stylingCondition = stylingCondition.or(designer.styling.contains(s)); // ✅ OR 조건 추가
+                    stylingCondition = stylingCondition.or(designer.styling.contains(s));
                 }
             }
             builder.and(stylingCondition);
@@ -52,13 +52,14 @@ public class DesignerRepositoryImpl implements DesignerRepositoryCustom {
                         .and(designer.onlineConsultFee.loe(Integer.parseInt(maxPrice))));
             } else if (meetingType == MeetingType.BOTH) {
                 builder.and(designer.offlineConsultFee.goe(Integer.parseInt(minPrice))
-                        .and(designer.onlineConsultFee.goe(Integer.parseInt(maxPrice))));
+                        .and(designer.onlineConsultFee.loe(Integer.parseInt(maxPrice))));
             }
         }
 
         return queryFactory
                 .selectFrom(designer)
                 .where(builder)
+                .orderBy(designer.rating.desc())
                 .offset((long) page * size)
                 .limit(size)
                 .fetch();
