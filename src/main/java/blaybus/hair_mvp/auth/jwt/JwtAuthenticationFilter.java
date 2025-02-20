@@ -85,10 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //
-        System.out.println("asfasff");
         String accessToken = extractAccessToken(request).get();
-        System.out.println("accessToken");
         Claims claims = jwtService.verifyToken(accessToken);
         AccessTokenPayload accessTokenPayload = jwtService.createAccessTokenPayload(claims);
         var email = accessTokenPayload.email();
