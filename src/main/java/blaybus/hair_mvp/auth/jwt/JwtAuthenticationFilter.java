@@ -85,7 +85,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     private void validateAccessToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String accessToken = getAccessTokenFromCookie(request);
+        //
+        System.out.println("asfasff");
+        String accessToken = extractAccessToken(request).get();
+        System.out.println("accessToken");
         Claims claims = jwtService.verifyToken(accessToken);
         AccessTokenPayload accessTokenPayload = jwtService.createAccessTokenPayload(claims);
         var email = accessTokenPayload.email();
@@ -94,6 +97,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
+    }
+
+
+
+    public Optional<String> extractAccessToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader("Authorization"))
+                .filter(accessToken -> accessToken.startsWith("Bearer "))
+                .map(accessToken -> accessToken.replace("Bearer ", ""));
     }
 
     private Optional<String> getRefreshTokenFromCookie(HttpServletRequest request) {
